@@ -9,6 +9,8 @@ import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { Shop } from './pages/Shop';
 import { Admin } from './pages/Admin';
+import { ToastProvider } from './components/Toast';
+import { ScrollProgress } from './components/ScrollProgress';
 
 type Theme = 'dark' | 'light';
 
@@ -31,20 +33,23 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Landing />} />
-            <Route path="/algorithms" element={<Algorithms />} />
-            <Route path="/algorithms/:slug" element={<AlgorithmDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/admin" element={<Admin />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <ToastProvider>
+        <BrowserRouter>
+          <ScrollProgress />
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Landing />} />
+              <Route path="/algorithms" element={<Algorithms />} />
+              <Route path="/algorithms/:slug" element={<AlgorithmDetail />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/admin" element={<Admin />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
     </ThemeContext.Provider>
   );
 }

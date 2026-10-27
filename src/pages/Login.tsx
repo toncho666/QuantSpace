@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../App';
 import { BarChart3, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useToast } from '../components/Toast';
 
 export function Login() {
   const { theme } = useTheme();
@@ -9,27 +11,49 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { showToast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In production, this would call the auth API
-    alert('Demo: Authentication would be processed here. This is a frontend demo.');
+    showToast('info', 'Demo mode: Authentication is simulated. In production, this connects to a secure backend.');
   };
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-center mb-8"
+        >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <BarChart3 className="w-8 h-8 text-navy-400" />
+            <motion.div
+              animate={{ rotate: [0, -10, 10, -10, 0] }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <BarChart3 className="w-8 h-8 text-navy-400" />
+            </motion.div>
           </div>
           <h1 className="text-2xl font-bold">Welcome back</h1>
           <p className={`mt-2 text-sm ${isDark ? 'text-graphite-400' : 'text-graphite-600'}`}>
             Sign in to access your trading dashboard
           </p>
-        </div>
+        </motion.div>
 
-        <form onSubmit={handleSubmit} className={`rounded-xl p-6 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200 shadow-sm'}`}>
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          onSubmit={handleSubmit}
+          className={`rounded-xl p-6 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200 shadow-sm'}`}
+        >
           <div className="space-y-4">
             <div>
               <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-graphite-300' : 'text-graphite-700'}`}>Email</label>
@@ -76,19 +100,29 @@ export function Login() {
           >
             Sign In
           </button>
-        </form>
+        </motion.form>
 
-        <p className={`text-center text-sm mt-6 ${isDark ? 'text-graphite-500' : 'text-graphite-600'}`}>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className={`text-center text-sm mt-6 ${isDark ? 'text-graphite-500' : 'text-graphite-600'}`}
+        >
           Don't have an account?{' '}
           <Link to="/register" className="text-navy-400 hover:text-navy-300 font-medium">Create one</Link>
-        </p>
+        </motion.p>
 
-        <div className={`mt-8 p-4 rounded-lg text-center ${isDark ? 'bg-graphite-900/30' : 'bg-graphite-50'}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className={`mt-8 p-4 rounded-lg text-center ${isDark ? 'bg-graphite-900/30' : 'bg-graphite-50'}`}
+        >
           <p className={`text-xs ${isDark ? 'text-graphite-600' : 'text-graphite-400'}`}>
             Demo mode — authentication is simulated. In production, this connects to a secure backend with JWT sessions, rate limiting, and 2FA support.
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

@@ -2,35 +2,59 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../App';
 import { BarChart3 } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useToast } from '../components/Toast';
 
 export function Register() {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirm: '', agree: false });
+  const { showToast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirm) {
-      alert('Passwords do not match');
+      showToast('error', 'Passwords do not match');
       return;
     }
-    alert('Demo: Registration would be processed here. In production, email verification would be required.');
+    showToast('success', 'Demo: Registration successful! In production, email verification would be required.');
   };
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-center mb-8"
+        >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <BarChart3 className="w-8 h-8 text-navy-400" />
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 10, 0] }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <BarChart3 className="w-8 h-8 text-navy-400" />
+            </motion.div>
           </div>
           <h1 className="text-2xl font-bold">Create your account</h1>
           <p className={`mt-2 text-sm ${isDark ? 'text-graphite-400' : 'text-graphite-600'}`}>
             Start exploring systematic trading strategies
           </p>
-        </div>
+        </motion.div>
 
-        <form onSubmit={handleSubmit} className={`rounded-xl p-6 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200 shadow-sm'}`}>
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          onSubmit={handleSubmit}
+          className={`rounded-xl p-6 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200 shadow-sm'}`}
+        >
           <div className="space-y-4">
             <div>
               <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-graphite-300' : 'text-graphite-700'}`}>Full Name</label>
@@ -96,19 +120,29 @@ export function Register() {
           >
             Create Account
           </button>
-        </form>
+        </motion.form>
 
-        <p className={`text-center text-sm mt-6 ${isDark ? 'text-graphite-500' : 'text-graphite-600'}`}>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className={`text-center text-sm mt-6 ${isDark ? 'text-graphite-500' : 'text-graphite-600'}`}
+        >
           Already have an account?{' '}
           <Link to="/login" className="text-navy-400 hover:text-navy-300 font-medium">Sign in</Link>
-        </p>
+        </motion.p>
 
-        <div className={`mt-8 p-4 rounded-lg text-center ${isDark ? 'bg-graphite-900/30' : 'bg-graphite-50'}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className={`mt-8 p-4 rounded-lg text-center ${isDark ? 'bg-graphite-900/30' : 'bg-graphite-50'}`}
+        >
           <p className={`text-xs ${isDark ? 'text-graphite-600' : 'text-graphite-400'}`}>
             Demo mode — registration is simulated. In production, email verification, password hashing (bcrypt), and rate limiting would be enforced.
           </p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

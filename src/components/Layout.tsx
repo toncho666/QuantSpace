@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 import { Moon, Sun, Menu, X, BarChart3 } from 'lucide-react';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Layout() {
   const { theme, toggleTheme } = useTheme();
@@ -86,26 +87,45 @@ export function Layout() {
         </div>
 
         {/* Mobile menu */}
-        {mobileMenuOpen && !isDashboard && !isAuth && (
-          <div className={`md:hidden border-t ${theme === 'dark' ? 'border-graphite-800 bg-navy-950' : 'border-graphite-200 bg-white'}`}>
-            <div className="px-4 py-4 space-y-3">
-              {navLinks.map(link => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm font-medium py-2"
+        <AnimatePresence>
+          {mobileMenuOpen && !isDashboard && !isAuth && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`md:hidden border-t overflow-hidden ${theme === 'dark' ? 'border-graphite-800 bg-navy-950' : 'border-graphite-200 bg-white'}`}
+            >
+              <div className="px-4 py-4 space-y-3">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.to}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <Link
+                      to={link.to}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block text-sm font-medium py-2"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="pt-3 border-t border-graphite-800 flex gap-3"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="pt-3 border-t border-graphite-800 flex gap-3">
-                <Link to="/login" className="text-sm font-medium py-2">Sign In</Link>
-                <Link to="/register" className="text-sm font-medium px-4 py-2 rounded-lg bg-navy-500 text-white">Get Started</Link>
+                  <Link to="/login" className="text-sm font-medium py-2">Sign In</Link>
+                  <Link to="/register" className="text-sm font-medium px-4 py-2 rounded-lg bg-navy-500 text-white">Get Started</Link>
+                </motion.div>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Main content */}

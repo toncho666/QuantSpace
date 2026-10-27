@@ -3,6 +3,7 @@ import { signals, algorithms, DEMO_DISCLAIMER } from '../data/mockData';
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, BarChart, Bar } from 'recharts';
 import { Activity, TrendingUp, AlertTriangle, Bell, Settings, BarChart3, Signal, Wallet, Clock, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type Tab = 'overview' | 'signals' | 'analytics' | 'subscriptions' | 'settings';
 
@@ -72,16 +73,30 @@ export function Dashboard() {
 
         <div className="p-4 sm:p-6 lg:p-8">
           {/* Demo banner */}
-          <div className={`rounded-lg p-3 mb-6 flex items-center gap-2 ${isDark ? 'bg-warning/5 border border-warning/20' : 'bg-warning/5 border border-warning/20'}`}>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`rounded-lg p-3 mb-6 flex items-center gap-2 ${isDark ? 'bg-warning/5 border border-warning/20' : 'bg-warning/5 border border-warning/20'}`}
+          >
             <AlertTriangle className="w-4 h-4 text-warning shrink-0" />
             <p className="text-xs text-warning">{DEMO_DISCLAIMER}</p>
-          </div>
+          </motion.div>
 
-          {activeTab === 'overview' && <OverviewTab isDark={isDark} />}
-          {activeTab === 'signals' && <SignalsTab isDark={isDark} />}
-          {activeTab === 'analytics' && <AnalyticsTab isDark={isDark} />}
-          {activeTab === 'subscriptions' && <SubscriptionsTab isDark={isDark} />}
-          {activeTab === 'settings' && <SettingsTab isDark={isDark} />}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {activeTab === 'overview' && <OverviewTab isDark={isDark} />}
+              {activeTab === 'signals' && <SignalsTab isDark={isDark} />}
+              {activeTab === 'analytics' && <AnalyticsTab isDark={isDark} />}
+              {activeTab === 'subscriptions' && <SubscriptionsTab isDark={isDark} />}
+              {activeTab === 'settings' && <SettingsTab isDark={isDark} />}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -96,7 +111,13 @@ function OverviewTab({ isDark }: { isDark: boolean }) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold">Dashboard Overview</h2>
+      <motion.h2
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="text-xl font-bold"
+      >
+        Dashboard Overview
+      </motion.h2>
       
       {/* Stats Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -106,13 +127,20 @@ function OverviewTab({ isDark }: { isDark: boolean }) {
           { label: 'Alerts', value: '3', icon: Bell, color: 'text-warning' },
           { label: 'Active Bots', value: '0', icon: Activity, color: 'text-graphite-400' },
         ].map((stat, i) => (
-          <div key={i} className={`p-4 rounded-xl ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200'}`}>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            whileHover={{ y: -4, scale: 1.02 }}
+            className={`p-4 rounded-xl ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200'}`}
+          >
             <div className="flex items-center justify-between">
               <stat.icon className={`w-5 h-5 ${stat.color}`} />
               <span className="text-2xl font-bold">{stat.value}</span>
             </div>
             <p className={`text-sm mt-2 ${isDark ? 'text-graphite-400' : 'text-graphite-600'}`}>{stat.label}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
 
@@ -190,8 +218,15 @@ function SignalsTab({ isDark }: { isDark: boolean }) {
       </div>
 
       <div className="space-y-3">
-        {filtered.map(sig => (
-          <div key={sig.id} className={`rounded-xl p-5 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200'}`}>
+        {filtered.map((sig, i) => (
+          <motion.div
+            key={sig.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            whileHover={{ scale: 1.01, x: 4 }}
+            className={`rounded-xl p-5 ${isDark ? 'bg-graphite-900/50 border border-graphite-800 hover:border-navy-800' : 'bg-white border border-graphite-200 hover:border-navy-300'} transition-colors`}
+          >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${sig.direction === 'LONG' ? 'bg-profit/10' : 'bg-loss/10'}`}>
@@ -247,7 +282,7 @@ function SignalsTab({ isDark }: { isDark: boolean }) {
                 Reason: {sig.invalidationReason}
               </p>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
