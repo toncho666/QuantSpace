@@ -28,78 +28,60 @@
 - Чистые линии и сетки
 - Минимум декора
 
-### Цветовая палитра
+## 🌓 Темы
 
-**Тёмная тема (основная):**
+### Светлая тема (по умолчанию)
+
+**Цвета:**
+- Base: `#ffffff` (белый)
+- Surface: `#fafafa` (почти белый)
+- Text Primary: `#171717` (почти чёрный)
+- Text Secondary: `#525252` (тёмно-серый)
+- Text Muted: `#737373` (серый)
+- Accent: `#f59e0b` (тёплый amber)
+
+### Тёмная тема
+
+**Цвета:**
 - Base: `#09090b` (почти чёрный)
 - Surface: `#111113`
-- Text: `#fafafa` → `#737373` (нейтральные)
+- Text Primary: `#fafafa` (почти белый)
+- Text Secondary: `#a3a3a3` (светло-серый)
+- Text Muted: `#737373` (серый)
 - Accent: `#f59e0b` (тёплый amber)
-- Profit: `#34d399` (приглушённый зелёный)
-- Loss: `#f87171` (приглушённый красный)
 
-**Светлая тема:**
-- Base: `#ffffff`
-- Surface: `#fafafa`
-- Text: `#171717` → `#737373`
+### Theme-aware система
 
-### Типографика
+Все цвета текста и фона автоматически переключаются между темами через CSS переменные:
 
-**Display стили (заголовки):**
 ```css
-.display-xl — font-weight: 200, letter-spacing: -0.04em, line-height: 0.95
-.display-lg — font-weight: 200, letter-spacing: -0.035em, line-height: 1
-.display-md — font-weight: 300, letter-spacing: -0.03em, line-height: 1.05
+/* Светлая тема (по умолчанию) */
+:root {
+  --color-text-primary: #171717;
+  --color-text-secondary: #525252;
+  --color-text-muted: #737373;
+  --color-bg-base: #ffffff;
+}
+
+/* Тёмная тема */
+html.dark {
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+  --color-bg-base: #09090b;
+}
 ```
 
-**Метрики:**
-```css
-.metric — font-family: 'JetBrains Mono', tabular-nums, letter-spacing: -0.02em
-```
-
-**Лейблы:**
-```css
-.label — font-size: 0.6875rem, font-weight: 500, letter-spacing: 0.08em, uppercase
-```
-
-### Компоненты
-
-**Границы:**
-- Hairline: `0.5px` (Apple-style)
-- Border: `rgba(255, 255, 255, 0.06)` (тёмная) / `rgba(0, 0, 0, 0.06)` (светлая)
-- Разделители: градиентные линии
-
-**Карточки:**
-- Без теней (минимализм)
-- Тонкие границы
-- Hover: изменение фона на `white/[0.02]`
-- Padding: `p-8 lg:p-12`
-
-**Кнопки:**
-- Rounded-full (pill shape)
-- Primary: `bg-neutral-100 text-neutral-900`
-- Secondary: `border border-white/10`
-- Hover: плавные transitions
-
-**Теги:**
-```css
-.tag — font-size: 0.6875rem, padding: 0.25rem 0.625rem, rounded-full, border
-```
-
-### Анимации
-
-**Система анимаций:**
-- FadeIn — появление при скролле
-- Stagger — последовательное появление списков
-- AnimatedCounter — анимированные числа
-- Spring physics — естественные движения
-- Duration: 0.3-0.6s (оптимально для UX)
-
-**Hover эффекты:**
-- Scale: `1.02-1.05` (лёгкое увеличение)
-- Translate: `-4px` (подъём)
-- Background: `white/[0.02]` (тонкое изменение)
-- Color: transition на accent
+**Utility классы:**
+- `.text-primary` — основной текст (автоматически переключается)
+- `.text-secondary` — вторичный текст
+- `.text-muted` — приглушённый текст
+- `.text-subtle` — еле заметный текст
+- `.bg-base-theme` — основной фон
+- `.bg-surface-theme` — поверхностный фон
+- `.bg-hover-theme` — hover фон
+- `.border-base-theme` — основная граница
+- `.bg-primary` — кнопка (инвертируется в тёмной теме)
 
 ## 📱 Страницы
 
@@ -143,31 +125,20 @@
 - Платежи и подписки
 - Системный мониторинг
 
-## ✨ UX улучшения
+## ✨ Анимации
 
-### Визуальная обратная связь
-- Toast уведомления с анимациями
-- Loading states (skeleton)
-- Hover эффекты на всех интерактивных элементах
-- Focus states для accessibility
+### Система анимаций
+- **FadeIn** — появление при скролле
+- **Stagger** — последовательное появление списков
+- **AnimatedCounter** — анимированные числа
+- **Spring physics** — естественные движения
+- **Duration**: 0.3-0.6s (оптимально для UX)
 
-### Навигация
-- Scroll progress indicator
-- Smooth scroll
-- Mobile menu с анимацией
-- Active states для текущей страницы
-
-### Формы
-- Rounded-full inputs
-- Плавные transitions при фокусе
-- Password visibility toggle
-- Validation feedback через toasts
-
-### Производительность
-- GPU-accelerated анимации
-- Intersection Observer
-- Оптимизированные transitions
-- Reduced motion support
+### Hover эффекты
+- Scale: `1.02-1.05` (лёгкое увеличение)
+- Translate: `-4px` (подъём)
+- Background: `hover-theme` (тонкое изменение)
+- Color: transition на accent
 
 ## 🎯 Ключевые принципы
 
@@ -177,6 +148,7 @@
 4. **Детали** — тонкие границы, точные отступы, премиальное ощущение
 5. **Контраст** — большие размеры vs маленькие, тонкое vs жирное
 6. **Монохромность** — один акцентный цвет, остальное в нейтральных тонах
+7. **Theme-aware** — все цвета автоматически переключаются между темами
 
 ## 🚀 Технологии
 
@@ -201,6 +173,18 @@ npm run dev
 npm run build
 ```
 
+## 🌓 Переключение тем
+
+Тема переключается через кнопку в header. По умолчанию используется светлая тема.
+
+**Дефолтная тема:** светлая (`light`)
+
+**Переключение:**
+```typescript
+const { theme, toggleTheme } = useTheme();
+// theme: 'light' | 'dark'
+```
+
 ## ⚠️ Дисклеймер
 
 Все данные являются синтетическими демо-данными. Это не реальные торговые результаты. Торговля связана с риском убытков.
@@ -208,3 +192,21 @@ npm run build
 ## 📄 Лицензия
 
 © 2026 QuantSpace
+
+## 🔄 Изменения
+
+### Последнее обновление
+
+✅ **Светлая тема установлена как дефолтная**
+- Все цвета текста и фона автоматически переключаются между темами
+- Создана система theme-aware CSS переменных
+- Все страницы обновлены с использованием theme-aware классов
+- Проверена читаемость текста в обеих темах
+- Добавлены utility классы для текста и фона
+
+✅ **Исправленные визуальные артефакты:**
+- Убраны градиенты на тексте
+- Убраны яркие SaaS-цвета
+- Заменены заметные границы на hairline
+- Добавлены theme-aware классы для автоматического переключения
+- Улучшена читаемость в светлой теме

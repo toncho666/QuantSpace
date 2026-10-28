@@ -23,7 +23,7 @@ export const ThemeContext = createContext<ThemeContextType>({ theme: 'dark', tog
 export const useTheme = () => useContext(ThemeContext);
 
 function App() {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
     document.documentElement.className = theme;

@@ -1,5 +1,38 @@
 @import "tailwindcss";
 
+/* Theme-aware text colors via CSS variables */
+:root {
+  /* Light theme (default) */
+  --color-text-primary: #171717;      /* neutral-900 */
+  --color-text-secondary: #525252;    /* neutral-600 */
+  --color-text-muted: #737373;        /* neutral-500 */
+  --color-text-subtle: #a3a3a3;       /* neutral-400 */
+  
+  --color-bg-base: #ffffff;
+  --color-bg-surface: #fafafa;
+  --color-bg-elevated: #f5f5f5;
+  --color-bg-hover: rgba(0, 0, 0, 0.02);
+  
+  --color-border-base: rgba(0, 0, 0, 0.06);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+}
+
+html.dark {
+  /* Dark theme */
+  --color-text-primary: #fafafa;      /* neutral-50 */
+  --color-text-secondary: #a3a3a3;    /* neutral-400 */
+  --color-text-muted: #737373;        /* neutral-500 */
+  --color-text-subtle: #525252;       /* neutral-600 */
+  
+  --color-bg-base: #09090b;
+  --color-bg-surface: #111113;
+  --color-bg-elevated: #18181b;
+  --color-bg-hover: rgba(255, 255, 255, 0.02);
+  
+  --color-border-base: rgba(255, 255, 255, 0.06);
+  --color-border-strong: rgba(255, 255, 255, 0.12);
+}
+
 @theme {
   /* Neutral palette — Apple-like precision */
   --color-neutral-50: #fafafa;
@@ -14,12 +47,26 @@
   --color-neutral-900: #171717;
   --color-neutral-950: #0a0a0a;
 
-  /* Base colors — dark theme */
+  /* Theme-aware semantic colors */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-subtle: var(--color-text-subtle);
+  
+  --color-bg-base: var(--color-bg-base);
+  --color-bg-surface: var(--color-bg-surface);
+  --color-bg-elevated: var(--color-bg-elevated);
+  --color-bg-hover: var(--color-bg-hover);
+  
+  --color-border-base: var(--color-border-base);
+  --color-border-strong: var(--color-border-strong);
+
+  /* Base colors — dark theme (fallback) */
   --color-base: #09090b;
   --color-surface: #111113;
   --color-elevated: #18181b;
   --color-border: rgba(255, 255, 255, 0.06);
-  --color-border-strong: rgba(255, 255, 255, 0.12);
+  --color-border-strong-legacy: rgba(255, 255, 255, 0.12);
   --color-border-light: rgba(255, 255, 255, 0.03);
 
   /* Accent — warm amber (editorial, premium) */
@@ -223,4 +270,67 @@ body {
 /* Smooth transitions */
 html {
   scroll-behavior: smooth;
+}
+
+/* Theme-aware text utilities */
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-subtle {
+  color: var(--color-text-subtle);
+}
+
+/* Theme-aware background utilities */
+.bg-base-theme {
+  background-color: var(--color-bg-base);
+}
+
+.bg-surface-theme {
+  background-color: var(--color-bg-surface);
+}
+
+.bg-elevated-theme {
+  background-color: var(--color-bg-elevated);
+}
+
+.bg-hover-theme {
+  background-color: var(--color-bg-hover);
+}
+
+/* Theme-aware border utilities */
+.border-base-theme {
+  border-color: var(--color-border-base);
+}
+
+.border-strong-theme {
+  border-color: var(--color-border-strong);
+}
+
+/* Theme-aware primary button */
+:root {
+  --color-btn-primary-bg: #171717;
+  --color-btn-primary-text: #ffffff;
+}
+
+html.dark {
+  --color-btn-primary-bg: #fafafa;
+  --color-btn-primary-text: #09090b;
+}
+
+.bg-primary {
+  background-color: var(--color-btn-primary-bg);
+  color: var(--color-btn-primary-text);
+}
+
+.bg-subtle {
+  background-color: var(--color-text-subtle);
 }
