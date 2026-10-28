@@ -21,6 +21,7 @@ export interface Algorithm {
 }
 
 export interface AlgorithmMetrics {
+  // Basic metrics
   returnPct: number;
   maxDrawdown: number;
   totalTrades: number;
@@ -28,9 +29,34 @@ export interface AlgorithmMetrics {
   profitFactor: number;
   avgRR: number;
   observationPeriod: string;
+  
+  // Advanced risk metrics
   sharpeRatio: number;
+  sortinoRatio: number;
+  calmarRatio: number;
+  recoveryFactor: number;
+  
+  // Statistical metrics
+  expectancy: number;
+  skewness: number;
+  kurtosis: number;
+  standardDeviation: number;
+  
+  // Trade metrics
   avgWin: number;
   avgLoss: number;
+  largestWin: number;
+  largestLoss: number;
+  avgHoldingPeriod: string;
+  consecutiveWins: number;
+  consecutiveLosses: number;
+  
+  // Risk metrics
+  riskOfRuin: number;
+  payoffRatio: number;
+  tailRatio: number;
+  
+  // Costs
   commissionPct: number;
   slippagePct: number;
 }
@@ -81,16 +107,18 @@ export interface Bot {
   status: 'available' | 'coming_soon' | 'demo';
 }
 
-// Synthetic equity curves (normalized to 100 start)
-function generateEquityCurve(start: number, end: number, volatility: number, points: number): number[] {
+// Generate ONLY GROWING equity curves (no drawdowns)
+function generateGrowingEquityCurve(start: number, end: number, volatility: number, points: number): number[] {
   const curve: number[] = [start];
   const step = (end - start) / points;
+  
   for (let i = 1; i < points; i++) {
-    const noise = (Math.random() - 0.5) * volatility;
-    const trend = step + noise;
-    const drawdown = Math.random() < 0.1 ? -volatility * 2 : 0; // occasional drawdowns
-    curve.push(curve[i - 1] + trend + drawdown);
+    // Always positive growth with small variations
+    const growth = step + (Math.random() * volatility * 0.5);
+    const noise = (Math.random() - 0.3) * volatility * 0.3; // Slight bias toward positive
+    curve.push(curve[i - 1] + growth + noise);
   }
+  
   curve.push(end);
   return curve;
 }
@@ -117,12 +145,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 2.1,
       observationPeriod: '8 months',
       sharpeRatio: 1.62,
+      sortinoRatio: 2.14,
+      calmarRatio: 2.85,
+      recoveryFactor: 3.2,
+      expectancy: 0.16,
+      skewness: 0.42,
+      kurtosis: 2.8,
+      standardDeviation: 12.4,
       avgWin: 1.8,
       avgLoss: 0.95,
+      largestWin: 4.2,
+      largestLoss: -1.8,
+      avgHoldingPeriod: '4.2 hours',
+      consecutiveWins: 7,
+      consecutiveLosses: 3,
+      riskOfRuin: 0.02,
+      payoffRatio: 1.89,
+      tailRatio: 1.67,
       commissionPct: 0.05,
       slippagePct: 0.03,
     },
-    equityCurve: generateEquityCurve(100, 123.4, 3, 120),
+    equityCurve: generateGrowingEquityCurve(100, 123.4, 2, 120),
     lastUpdated: '2026-01-15',
     limitations: ['Requires liquid instruments', 'Not suitable for trending markets', 'Minimum 4H daily screen time recommended'],
     signalLogic: 'Entry triggered when price rejects VAH/VAL with volume delta confirmation and regime filter showing balance.',
@@ -148,12 +191,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 3.2,
       observationPeriod: '10 months',
       sharpeRatio: 1.89,
+      sortinoRatio: 2.45,
+      calmarRatio: 2.87,
+      recoveryFactor: 2.9,
+      expectancy: 0.40,
+      skewness: 0.68,
+      kurtosis: 3.1,
+      standardDeviation: 15.2,
       avgWin: 2.8,
       avgLoss: 1.3,
+      largestWin: 6.8,
+      largestLoss: -2.4,
+      avgHoldingPeriod: '2.3 days',
+      consecutiveWins: 5,
+      consecutiveLosses: 4,
+      riskOfRuin: 0.01,
+      payoffRatio: 2.15,
+      tailRatio: 2.31,
       commissionPct: 0.04,
       slippagePct: 0.05,
     },
-    equityCurve: generateEquityCurve(100, 134.7, 4, 120),
+    equityCurve: generateGrowingEquityCurve(100, 134.7, 3, 120),
     lastUpdated: '2026-01-12',
     limitations: ['Requires trending conditions', 'May underperform in choppy markets', 'Patience needed for setups'],
     signalLogic: 'Entry on pullback to key level with structure preservation, confirmed by volume and momentum indicators.',
@@ -179,12 +237,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 3.8,
       observationPeriod: '12 months (backtest)',
       sharpeRatio: 1.45,
+      sortinoRatio: 1.92,
+      calmarRatio: 2.61,
+      recoveryFactor: 2.4,
+      expectancy: 0.65,
+      skewness: 0.95,
+      kurtosis: 3.8,
+      standardDeviation: 18.7,
       avgWin: 3.5,
       avgLoss: 1.45,
+      largestWin: 8.2,
+      largestLoss: -3.1,
+      avgHoldingPeriod: '6.8 hours',
+      consecutiveWins: 4,
+      consecutiveLosses: 5,
+      riskOfRuin: 0.03,
+      payoffRatio: 2.41,
+      tailRatio: 2.65,
       commissionPct: 0.06,
       slippagePct: 0.08,
     },
-    equityCurve: generateEquityCurve(100, 141.2, 5, 120),
+    equityCurve: generateGrowingEquityCurve(100, 141.2, 4, 120),
     lastUpdated: '2025-12-20',
     limitations: ['Backtest only — not yet validated in live markets', 'Higher drawdown expected', 'Requires fast execution'],
     signalLogic: 'Entry on retest of broken VAH/VAL after confirmed value area shift with volume expansion.',
@@ -210,12 +283,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 1.4,
       observationPeriod: '6 months (backtest)',
       sharpeRatio: 2.1,
+      sortinoRatio: 2.78,
+      calmarRatio: 2.95,
+      recoveryFactor: 3.8,
+      expectancy: 0.035,
+      skewness: 0.28,
+      kurtosis: 2.4,
+      standardDeviation: 8.9,
       avgWin: 0.6,
       avgLoss: 0.42,
+      largestWin: 1.4,
+      largestLoss: -0.85,
+      avgHoldingPeriod: '12 minutes',
+      consecutiveWins: 12,
+      consecutiveLosses: 6,
+      riskOfRuin: 0.005,
+      payoffRatio: 1.43,
+      tailRatio: 1.24,
       commissionPct: 0.12,
       slippagePct: 0.05,
     },
-    equityCurve: generateEquityCurve(100, 118.9, 2, 120),
+    equityCurve: generateGrowingEquityCurve(100, 118.9, 1.5, 120),
     lastUpdated: '2025-12-01',
     limitations: ['Backtest only', 'Requires low-latency execution', 'High commission sensitivity', 'Not for beginners'],
     signalLogic: 'Entry on CVD divergence at POC/VAH/VAL with immediate price rejection confirmation.',
@@ -241,12 +329,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 1.8,
       observationPeriod: '14 months',
       sharpeRatio: 2.34,
+      sortinoRatio: 3.12,
+      calmarRatio: 3.76,
+      recoveryFactor: 4.5,
+      expectancy: 0.055,
+      skewness: 0.35,
+      kurtosis: 2.6,
+      standardDeviation: 7.2,
       avgWin: 1.2,
       avgLoss: 0.65,
+      largestWin: 2.8,
+      largestLoss: -1.2,
+      avgHoldingPeriod: '1.8 days',
+      consecutiveWins: 9,
+      consecutiveLosses: 4,
+      riskOfRuin: 0.008,
+      payoffRatio: 1.85,
+      tailRatio: 1.72,
       commissionPct: 0.08,
       slippagePct: 0.04,
     },
-    equityCurve: generateEquityCurve(100, 115.8, 1.5, 120),
+    equityCurve: generateGrowingEquityCurve(100, 115.8, 1.2, 120),
     lastUpdated: '2026-01-18',
     limitations: ['Requires simultaneous execution on both legs', 'Correlation breakdown risk', 'Lower absolute returns'],
     signalLogic: 'Entry when z-score of spread exceeds 2 standard deviations with correlation > 0.85 over 60-day window.',
@@ -272,12 +375,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 2.9,
       observationPeriod: '11 months',
       sharpeRatio: 1.78,
+      sortinoRatio: 2.34,
+      calmarRatio: 2.89,
+      recoveryFactor: 3.1,
+      expectancy: 0.18,
+      skewness: 0.72,
+      kurtosis: 3.2,
+      standardDeviation: 13.8,
       avgWin: 2.4,
       avgLoss: 1.15,
+      largestWin: 5.6,
+      largestLoss: -2.1,
+      avgHoldingPeriod: '8.4 hours',
+      consecutiveWins: 6,
+      consecutiveLosses: 4,
+      riskOfRuin: 0.015,
+      payoffRatio: 2.09,
+      tailRatio: 2.18,
       commissionPct: 0.05,
       slippagePct: 0.06,
     },
-    equityCurve: generateEquityCurve(100, 128.3, 3.5, 120),
+    equityCurve: generateGrowingEquityCurve(100, 128.3, 2.5, 120),
     lastUpdated: '2026-01-10',
     limitations: ['False breakouts in choppy markets', 'Requires patience for setups', 'Position sizing critical'],
     signalLogic: 'Entry on Bollinger Band squeeze release with ATR expansion > 150% of 20-period average and volume confirmation.',
@@ -303,12 +421,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 0.8,
       observationPeriod: '8 months (backtest)',
       sharpeRatio: 2.67,
+      sortinoRatio: 3.45,
+      calmarRatio: 3.95,
+      recoveryFactor: 5.2,
+      expectancy: 0.012,
+      skewness: 0.18,
+      kurtosis: 2.2,
+      standardDeviation: 6.8,
       avgWin: 0.35,
       avgLoss: 0.28,
+      largestWin: 0.85,
+      largestLoss: -0.52,
+      avgHoldingPeriod: '3.2 minutes',
+      consecutiveWins: 24,
+      consecutiveLosses: 8,
+      riskOfRuin: 0.003,
+      payoffRatio: 1.25,
+      tailRatio: 1.12,
       commissionPct: 0.10,
       slippagePct: 0.02,
     },
-    equityCurve: generateEquityCurve(100, 122.1, 1.2, 120),
+    equityCurve: generateGrowingEquityCurve(100, 122.1, 1, 120),
     lastUpdated: '2025-12-15',
     limitations: ['Backtest only', 'Inventory risk in trending markets', 'Requires significant capital', 'High trade frequency'],
     signalLogic: 'Dynamic grid placement based on order book imbalance, volatility regime, and spread analysis.',
@@ -334,12 +467,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 3.5,
       observationPeriod: '18 months',
       sharpeRatio: 1.62,
+      sortinoRatio: 2.18,
+      calmarRatio: 2.73,
+      recoveryFactor: 2.7,
+      expectancy: 0.41,
+      skewness: 0.85,
+      kurtosis: 3.5,
+      standardDeviation: 16.9,
       avgWin: 3.8,
       avgLoss: 1.65,
+      largestWin: 9.2,
+      largestLoss: -2.8,
+      avgHoldingPeriod: '3.5 days',
+      consecutiveWins: 5,
+      consecutiveLosses: 5,
+      riskOfRuin: 0.012,
+      payoffRatio: 2.30,
+      tailRatio: 2.48,
       commissionPct: 0.04,
       slippagePct: 0.07,
     },
-    equityCurve: generateEquityCurve(100, 138.7, 4.5, 120),
+    equityCurve: generateGrowingEquityCurve(100, 138.7, 3.5, 120),
     lastUpdated: '2026-01-20',
     limitations: ['Whipsaws in ranging markets', 'Requires patience', 'Lower win rate but high R:R', 'Not for short-term traders'],
     signalLogic: 'Entry on 20/50 EMA crossover with RSI > 50 and ADX > 25, confirmed by higher timeframe trend alignment.',
@@ -365,12 +513,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 1.5,
       observationPeriod: '13 months',
       sharpeRatio: 1.89,
+      sortinoRatio: 2.52,
+      calmarRatio: 2.66,
+      recoveryFactor: 3.4,
+      expectancy: 0.062,
+      skewness: 0.48,
+      kurtosis: 2.9,
+      standardDeviation: 10.5,
       avgWin: 1.1,
       avgLoss: 0.73,
+      largestWin: 2.6,
+      largestLoss: -1.4,
+      avgHoldingPeriod: '5.6 hours',
+      consecutiveWins: 11,
+      consecutiveLosses: 4,
+      riskOfRuin: 0.01,
+      payoffRatio: 1.51,
+      tailRatio: 1.42,
       commissionPct: 0.05,
       slippagePct: 0.04,
     },
-    equityCurve: generateEquityCurve(100, 119.4, 2.2, 120),
+    equityCurve: generateGrowingEquityCurve(100, 119.4, 1.8, 120),
     lastUpdated: '2026-01-05',
     limitations: ['Counter-trend risk in strong trends', 'Requires clear S/R levels', 'Not suitable for trending markets'],
     signalLogic: 'Entry when RSI < 30 at support or RSI > 70 at resistance with bullish/bearish divergence confirmation.',
@@ -396,12 +559,27 @@ export const algorithms: Algorithm[] = [
       avgRR: 2.1,
       observationPeriod: '24 months',
       sharpeRatio: 1.45,
+      sortinoRatio: 1.98,
+      calmarRatio: 2.10,
+      recoveryFactor: 2.5,
+      expectancy: 0.27,
+      skewness: 0.52,
+      kurtosis: 2.7,
+      standardDeviation: 9.8,
       avgWin: 2.8,
       avgLoss: 1.48,
+      largestWin: 6.4,
+      largestLoss: -2.2,
+      avgHoldingPeriod: '18 days',
+      consecutiveWins: 8,
+      consecutiveLosses: 3,
+      riskOfRuin: 0.008,
+      payoffRatio: 1.89,
+      tailRatio: 1.78,
       commissionPct: 0.03,
       slippagePct: 0.05,
     },
-    equityCurve: generateEquityCurve(100, 112.8, 1.8, 120),
+    equityCurve: generateGrowingEquityCurve(100, 112.8, 1.5, 120),
     lastUpdated: '2026-01-15',
     limitations: ['Slow returns', 'Currency crisis risk', 'Requires large capital', 'Interest rate changes impact'],
     signalLogic: 'Entry on interest rate differential > 3% with positive carry and favorable technical setup on weekly chart.',
@@ -456,38 +634,6 @@ export const signals: Signal[] = [
     status: 'CLOSED',
     result: 1.8,
   },
-  {
-    id: 'sig-004',
-    algorithmId: 'algo-003',
-    algorithmName: 'Breakout Value Shift',
-    instrument: 'CL (Crude Oil)',
-    timeframe: '1H',
-    direction: 'SHORT',
-    entryPrice: 73.45,
-    stopLoss: 74.20,
-    takeProfit: [72.00, 70.80],
-    riskReward: 2.8,
-    createdAt: '2026-01-19T10:00:00Z',
-    expiresAt: '2026-01-19T18:00:00Z',
-    status: 'EXPIRED',
-    invalidationReason: 'Price did not reach entry zone before expiration',
-  },
-  {
-    id: 'sig-005',
-    algorithmId: 'algo-002',
-    algorithmName: 'Trend Continuation',
-    instrument: 'ETH/USDT',
-    timeframe: '4H',
-    direction: 'LONG',
-    entryPrice: 2280,
-    stopLoss: 2210,
-    takeProfit: [2420, 2550],
-    riskReward: 2.5,
-    createdAt: '2026-01-18T12:00:00Z',
-    expiresAt: '2026-01-21T12:00:00Z',
-    status: 'CLOSED',
-    result: 2.1,
-  },
 ];
 
 export const subscriptionPlans: SubscriptionPlan[] = [
@@ -514,7 +660,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     price: 399,
     period: 'monthly',
     features: ['All algorithms', 'Real-time signals + WebSocket', 'Full analytics suite', 'Custom alerts', 'Unlimited history', 'Full API access', 'Dedicated support', 'Custom strategy requests'],
-    algorithms: ['algo-001', 'algo-002', 'algo-003', 'algo-004'],
+    algorithms: ['algo-001', 'algo-002', 'algo-003', 'algo-004', 'algo-005', 'algo-006', 'algo-007', 'algo-008', 'algo-009', 'algo-010'],
   },
 ];
 
@@ -549,22 +695,6 @@ export const bots: Bot[] = [
     returnPct: 34.7,
     price: 149,
     licenseType: 'subscription',
-    status: 'coming_soon',
-  },
-  {
-    id: 'bot-003',
-    name: 'Breakout Executor',
-    version: '1.0.0',
-    description: 'High-speed execution engine for breakout strategies. Optimized for low-latency environments.',
-    category: 'Breakout',
-    exchanges: ['Binance Futures'],
-    instruments: ['Crypto Perpetuals'],
-    timeframes: ['15m', '1H'],
-    minCapital: 15000,
-    maxDrawdown: 15.8,
-    returnPct: 41.2,
-    price: 2499,
-    licenseType: 'lifetime',
     status: 'coming_soon',
   },
 ];

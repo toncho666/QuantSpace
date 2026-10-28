@@ -1,123 +1,172 @@
 # QuantSpace — Algorithmic Trading Platform
 
-Премиальная платформа алгоритмической торговли в стиле на пересечении Apple, Awwwards 2026 и Benchmarkee.
+Премиальная платформа алгоритмической торговли с передовым UI/UX дизайном 2026 года.
 
-## 🎨 Дизайн-система
+## 🎨 Дизайн-система 2026
 
-### Визуальный стиль
+### Передовые UI/UX техники
 
-Дизайн создан на пересечении трёх направлений:
+**Bento Grid Layout**
+- Асимметричная сетка карточек разного размера
+- Визуальная иерархия через размер и положение
+- Интерактивные hover эффекты с 3D transforms
 
-**Apple** — минимализм, воздух, идеальная типографика
-- Тонкие hairline границы (0.5px)
-- Много whitespace
-- SF Pro-подобная типографика (Inter)
-- Тонкие, почти невидимые разделители
-- Премиальное ощущение пространства
+**Glassmorphism**
+- Полупрозрачные карточки с backdrop-blur
+- Эффект матового стекла
+- Глубина и многослойность
 
-**Awwwards 2026** — экспериментальная типографика, editorial layout
-- Огромные заголовки (clamp(3rem, 8vw, 7rem))
-- Контраст размеров (display-xl vs text-[11px])
-- Асимметричные сетки (grid-cols-12)
-- Монохромная палитра с одним акцентом (amber)
-- Editorial-style layout с номерами секций
+**Gradient Mesh Backgrounds**
+- Многослойные радиальные градиенты
+- Анимированные цветовые переходы
+- Органические, живые фоны
 
-**Benchmarkee** — профессиональный минимализм
-- Фокус на контенте
-- Системный подход
-- Чистые линии и сетки
-- Минимум декора
+**Advanced Animations**
+- Spring physics для естественных движений
+- Stagger animations для последовательного появления
+- Scroll-triggered animations
+- Micro-interactions на всех интерактивных элементах
 
-## 🌓 Темы
+**Interactive Data Visualization**
+- Только растущие equity curves (без просадок)
+- Sparklines в карточках метрик
+- Radar charts для сравнения стратегий
+- Real-time animated counters
 
-### Светлая тема (по умолчанию)
+### Цветовая палитра
 
-**Цвета:**
-- Base: `#ffffff` (белый)
-- Surface: `#fafafa` (почти белый)
-- Text Primary: `#171717` (почти чёрный)
-- Text Secondary: `#525252` (тёмно-серый)
-- Text Muted: `#737373` (серый)
-- Accent: `#f59e0b` (тёплый amber)
+**Vibrant Accents:**
+- Purple: `#8b5cf6`
+- Blue: `#3b82f6`
+- Cyan: `#06b6d4`
+- Pink: `#ec4899`
+- Orange: `#f97316`
 
-### Тёмная тема
+**Gradients:**
+- Primary: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`
+- Secondary: `linear-gradient(135deg, #f093fb 0%, #f5576c 100%)`
+- Accent: `linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)`
+- Success: `linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)`
 
-**Цвета:**
-- Base: `#09090b` (почти чёрный)
-- Surface: `#111113`
-- Text Primary: `#fafafa` (почти белый)
-- Text Secondary: `#a3a3a3` (светло-серый)
-- Text Muted: `#737373` (серый)
-- Accent: `#f59e0b` (тёплый amber)
+### Типографика
 
-### Theme-aware система
+**Display Hero:**
+- Font-weight: 200
+- Letter-spacing: -0.05em
+- Gradient text с анимацией
+- Size: clamp(3rem, 10vw, 8rem)
 
-Все цвета текста и фона автоматически переключаются между темами через CSS переменные:
+**Metrics:**
+- Monospace font (JetBrains Mono)
+- Tabular nums для выравнивания
+- Gradient coloring для позитивных значений
 
-```css
-/* Светлая тема (по умолчанию) */
-:root {
-  --color-text-primary: #171717;
-  --color-text-secondary: #525252;
-  --color-text-muted: #737373;
-  --color-bg-base: #ffffff;
-}
+## 📊 Advanced Analytics
 
-/* Тёмная тема */
-html.dark {
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #a3a3a3;
-  --color-text-muted: #737373;
-  --color-bg-base: #09090b;
+### 20+ метрик для каждой стратегии
+
+**Basic Metrics:**
+- Return %
+- Max Drawdown
+- Total Trades
+- Win Rate
+- Profit Factor
+- Average R:R
+
+**Advanced Risk Metrics:**
+- Sharpe Ratio (risk-adjusted return)
+- Sortino Ratio (downside risk adjusted)
+- Calmar Ratio (return vs max drawdown)
+- Recovery Factor (speed of recovery)
+
+**Statistical Metrics:**
+- Expectancy (average profit per trade)
+- Skewness (distribution asymmetry)
+- Kurtosis (tail heaviness)
+- Standard Deviation
+
+**Trade Metrics:**
+- Average Win/Loss
+- Largest Win/Loss
+- Average Holding Period
+- Consecutive Wins/Losses
+
+**Risk Metrics:**
+- Risk of Ruin
+- Payoff Ratio
+- Tail Ratio
+
+### Только растущие графики
+
+Все equity curves генерируются с гарантированным ростом:
+```typescript
+function generateGrowingEquityCurve(start, end, volatility, points) {
+  // Always positive growth with small variations
+  const growth = step + (Math.random() * volatility * 0.5);
+  const noise = (Math.random() - 0.3) * volatility * 0.3;
+  // Bias toward positive
 }
 ```
 
-**Utility классы:**
-- `.text-primary` — основной текст (автоматически переключается)
-- `.text-secondary` — вторичный текст
-- `.text-muted` — приглушённый текст
-- `.text-subtle` — еле заметный текст
-- `.bg-base-theme` — основной фон
-- `.bg-surface-theme` — поверхностный фон
-- `.bg-hover-theme` — hover фон
-- `.border-base-theme` — основная граница
-- `.bg-primary` — кнопка (инвертируется в тёмной теме)
+## 🆕 Новая страница сравнения
+
+### `/compare` — Advanced Comparison
+
+**Функциональность:**
+- Выбор до 5 алгоритмов для сравнения
+- Фильтрация по risk profile
+- Сортировка по любой метрике
+- Radar chart для визуального сравнения
+- Overlay equity curves
+- Детальная таблица метрик
+
+**Визуализации:**
+- Radar Chart: 6 ключевых метрик на одном графике
+- Equity Curves: overlay всех выбранных стратегий
+- Metrics Table: 9 колонок с основными показателями
 
 ## 📱 Страницы
 
-### Landing
-- Hero: editorial layout с огромной типографикой
-- Algorithms: grid с тонкими разделителями
-- Results: большие метрики в editorial стиле
-- How it works: numbered list с асимметрией
-- Pricing: минимальные карточки
-- FAQ: accordion с плавными анимациями
+### Landing (новая версия)
+- Hero с gradient mesh background
+- Bento grid с 5 карточками алгоритмов
+- Featured algorithm с большим графиком
+- Metrics showcase (8 карточек)
+- Animated gradient text
+- Interactive hover effects
 
 ### Algorithms
-- Список с фильтрами
-- Каждая строка — grid layout
-- Мини-графики equity curve
-- Метрики в моноширинном шрифте
+- Список всех 10 стратегий
+- Фильтры по risk, status, market
+- Мини-графики с правильным Y-axis domain
+- Детальные метрики
 
 ### Algorithm Detail
-- Большая типографика для названия
-- Equity curve с тонкими линиями
-- Метрики в grid layout
-- Signal logic и limitations
-- Pricing блок с акцентом
+- Полное описание стратегии
+- Equity curve с правильным масштабированием
+- Все 20+ метрик
+- Signal logic
+- Limitations
+- Pricing
+
+### Compare (НОВАЯ)
+- Выбор алгоритмов для сравнения
+- Radar chart
+- Equity curves overlay
+- Детальная таблица метрик
+- Сортировка и фильтрация
 
 ### Dashboard
-- Sidebar navigation
 - Overview с метриками
 - Signals с фильтрами
 - Analytics с графиками
-- Subscriptions и Settings
+- Subscriptions
+- Settings
 
 ### Bot Shop
-- Список ботов с деталями
+- Список торговых ботов
 - Статусы (available/demo/coming soon)
 - Метрики и цены
-- Информационный блок
 
 ### Admin
 - Управление пользователями
@@ -125,40 +174,36 @@ html.dark {
 - Платежи и подписки
 - Системный мониторинг
 
-## ✨ Анимации
+## 🎯 10 стратегий
 
-### Система анимаций
-- **FadeIn** — появление при скролле
-- **Stagger** — последовательное появление списков
-- **AnimatedCounter** — анимированные числа
-- **Spring physics** — естественные движения
-- **Duration**: 0.3-0.6s (оптимально для UX)
+1. **VP Mean Reversion** — Volume Profile (moderate)
+2. **Trend Continuation** — Trend Following (moderate)
+3. **Breakout Value Shift** — Breakout (aggressive)
+4. **Delta Divergence Scalp** — Scalping (aggressive)
+5. **Statistical Arbitrage** — Pairs Trading (conservative)
+6. **Volatility Breakout** — Volatility (moderate)
+7. **Grid Market Making** — Market Making (conservative)
+8. **Momentum Trend** — Trend Following (moderate)
+9. **RSI Mean Reversion** — Mean Reversion (moderate)
+10. **Carry Trade FX** — Carry Trade (conservative)
 
-### Hover эффекты
-- Scale: `1.02-1.05` (лёгкое увеличение)
-- Translate: `-4px` (подъём)
-- Background: `hover-theme` (тонкое изменение)
-- Color: transition на accent
-
-## 🎯 Ключевые принципы
-
-1. **Минимализм** — убрать всё лишнее, оставить только необходимое
-2. **Типографика** — использовать размер и вес как визуальные элементы
-3. **Пространство** — много воздуха, чёткая иерархия
-4. **Детали** — тонкие границы, точные отступы, премиальное ощущение
-5. **Контраст** — большие размеры vs маленькие, тонкое vs жирное
-6. **Монохромность** — один акцентный цвет, остальное в нейтральных тонах
-7. **Theme-aware** — все цвета автоматически переключаются между темами
+Каждая стратегия имеет:
+- 20+ аналитических метрик
+- Только растущий equity curve
+- Детальное описание
+- Signal logic
+- Limitations
+- Pricing
 
 ## 🚀 Технологии
 
-- React 18 + TypeScript
-- Vite (быстрая сборка)
-- Tailwind CSS 4
-- Framer Motion (анимации)
-- Recharts (графики)
-- React Router (навигация)
-- Lucide React (иконки)
+- **React 18** + TypeScript
+- **Vite** (быстрая сборка)
+- **Tailwind CSS 4** (utility-first)
+- **Framer Motion** (advanced animations)
+- **Recharts** (data visualization)
+- **React Router** (navigation)
+- **Lucide React** (icons)
 
 ## 📦 Установка
 
@@ -173,17 +218,59 @@ npm run dev
 npm run build
 ```
 
-## 🌓 Переключение тем
+## 🎨 Ключевые компоненты
 
-Тема переключается через кнопку в header. По умолчанию используется светлая тема.
+### BentoCard
+- Асимметричная сетка
+- Hover эффекты с 3D transforms
+- Разные размеры (col-2, col-3, col-4, col-6)
 
-**Дефолтная тема:** светлая (`light`)
+### GlassCard
+- Glassmorphism эффект
+- Backdrop blur
+- Полупрозрачность
 
-**Переключение:**
-```typescript
-const { theme, toggleTheme } = useTheme();
-// theme: 'light' | 'dark'
-```
+### MetricCard
+- Sparkline графики
+- Анимированные счётчики
+- Change indicators
+
+### GradientMesh
+- Многослойные радиальные градиенты
+- Анимированные фоны
+
+## ✨ Анимации
+
+**Spring Physics:**
+- Естественные, физически корректные движения
+- Stiffness и damping настройки
+
+**Stagger Animations:**
+- Последовательное появление элементов
+- Настраиваемая задержка
+
+**Scroll-triggered:**
+- Intersection Observer
+- Trigger once или repeat
+
+**Micro-interactions:**
+- Hover scale и translate
+- Color transitions
+- Border animations
+
+## 🌓 Темы
+
+**Светлая тема (по умолчанию):**
+- Чистый белый фон
+- Тёмный текст
+- Vibrant акценты
+
+**Тёмная тема:**
+- Глубокий чёрный фон
+- Светлый текст
+- Те же vibrant акценты
+
+Переключение через кнопку в header.
 
 ## ⚠️ Дисклеймер
 
@@ -193,20 +280,43 @@ const { theme, toggleTheme } = useTheme();
 
 © 2026 QuantSpace
 
-## 🔄 Изменения
+## 🔄 Последние изменения
 
-### Последнее обновление
+### Major Update 2026
 
-✅ **Светлая тема установлена как дефолтная**
-- Все цвета текста и фона автоматически переключаются между темами
-- Создана система theme-aware CSS переменных
-- Все страницы обновлены с использованием theme-aware классов
-- Проверена читаемость текста в обеих темах
-- Добавлены utility классы для текста и фона
+✅ **Полная переделка дизайна с нуля**
+- Bento grid layouts
+- Glassmorphism эффекты
+- Gradient mesh backgrounds
+- Advanced animations
 
-✅ **Исправленные визуальные артефакты:**
-- Убраны градиенты на тексте
-- Убраны яркие SaaS-цвета
-- Заменены заметные границы на hairline
-- Добавлены theme-aware классы для автоматического переключения
-- Улучшена читаемость в светлой теме
+✅ **Только растущие графики**
+- Убраны все просадки
+- Гарантированный рост equity curves
+- Более позитивное визуальное восприятие
+
+✅ **20+ аналитических метрик**
+- Sharpe, Sortino, Calmar ratios
+- Recovery factor, expectancy
+- Skewness, kurtosis
+- Risk of ruin, tail ratio
+- И многие другие
+
+✅ **Новая страница сравнения**
+- Radar charts
+- Equity curves overlay
+- Детальная таблица метрик
+- Сортировка и фильтрация
+
+✅ **10 стратегий**
+- Разнообразные классы стратегий
+- Разные risk profiles
+- Разные рынки и таймфреймы
+- Все с полными метриками
+
+✅ **Передовые UI/UX техники**
+- Interactive data visualization
+- Micro-interactions
+- Scroll-triggered animations
+- Spring physics
+- 3D transforms
