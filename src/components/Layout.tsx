@@ -13,6 +13,7 @@ export function Layout() {
 
   const navLinks = [
     { to: '/algorithms', label: 'Algorithms' },
+    { to: '/compare', label: 'Compare' },
     { to: '/shop', label: 'Bot Shop' },
     { to: '/dashboard', label: 'Dashboard' },
   ];

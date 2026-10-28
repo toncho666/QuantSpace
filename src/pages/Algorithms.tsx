@@ -15,7 +15,7 @@ function MiniChart({ data }: { data: number[] }) {
   return (
     <ResponsiveContainer width="100%" height={40}>
       <AreaChart data={chartData}>
-        <YAxis domain={[min - buffer, max + buffer]} hide />
+        <YAxis domain={[min - buffer, max + buffer]} hide tickFormatter={(value) => value.toFixed(0)} />
         <Area type="monotone" dataKey="y" stroke="currentColor" fill="none" strokeWidth={1} dot={false} />
       </AreaChart>
     </ResponsiveContainer>
@@ -26,12 +26,22 @@ export function Algorithms() {
   const [search, setSearch] = useState('');
   const [riskFilter, setRiskFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [marketFilter, setMarketFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('returnPct');
 
   const filtered = algorithms.filter(a => {
     if (search && !a.name.toLowerCase().includes(search.toLowerCase())) return false;
     if (riskFilter !== 'all' && a.riskProfile !== riskFilter) return false;
     if (statusFilter !== 'all' && a.status !== statusFilter) return false;
+    if (marketFilter !== 'all' && !a.markets.includes(marketFilter)) return false;
     return true;
+  }).sort((a, b) => {
+    if (sortBy === 'returnPct') return b.metrics.returnPct - a.metrics.returnPct;
+    if (sortBy === 'sharpeRatio') return b.metrics.sharpeRatio - a.metrics.sharpeRatio;
+    if (sortBy === 'winRate') return b.metrics.winRate - a.metrics.winRate;
+    if (sortBy === 'profitFactor') return b.metrics.profitFactor - a.metrics.profitFactor;
+    if (sortBy === 'maxDrawdown') return a.metrics.maxDrawdown - b.metrics.maxDrawdown;
+    return 0;
   });
 
   return (
@@ -42,9 +52,14 @@ export function Algorithms() {
           <h1 className="display-lg text-5xl lg:text-6xl text-primary mb-4">
             Algorithms
           </h1>
-          <p className="text-[15px] font-light text-secondary max-w-xl">
+          <p className="text-[15px] font-light text-secondary max-w-xl mb-6">
             Systematically developed trading strategies with documented methodology.
           </p>
+          <div className="flex items-center gap-4">
+            <span className="text-[13px] text-muted">
+              Showing <span className="text-primary font-medium">{filtered.length}</span> of <span className="text-primary font-medium">{algorithms.length}</span> strategies
+            </span>
+          </div>
         </div>
       </FadeIn>
 
@@ -60,7 +75,7 @@ export function Algorithms() {
               className="w-full pl-11 pr-4 py-2.5 rounded-full text-[13px] bg-surface-theme border border-base-theme text-primary placeholder:text-subtle focus:outline-none focus:border-accent/50 transition-colors"
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <SlidersHorizontal className="w-4 h-4 text-muted" />
             <select
               value={riskFilter}
@@ -81,6 +96,28 @@ export function Algorithms() {
               <option value="backtest">Backtest</option>
               <option value="paper">Paper</option>
               <option value="live">Live</option>
+            </select>
+            <select
+              value={marketFilter}
+              onChange={e => setMarketFilter(e.target.value)}
+              className="px-4 py-2.5 rounded-full text-[13px] bg-surface-theme border border-base-theme text-primary focus:outline-none focus:border-accent/50"
+            >
+              <option value="all">All Markets</option>
+              <option value="Futures">Futures</option>
+              <option value="Crypto">Crypto</option>
+              <option value="Forex">Forex</option>
+              <option value="Equities">Equities</option>
+            </select>
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="px-4 py-2.5 rounded-full text-[13px] bg-surface-theme border border-base-theme text-primary focus:outline-none focus:border-accent/50"
+            >
+              <option value="returnPct">Sort: Return</option>
+              <option value="sharpeRatio">Sort: Sharpe</option>
+              <option value="winRate">Sort: Win Rate</option>
+              <option value="profitFactor">Sort: Profit Factor</option>
+              <option value="maxDrawdown">Sort: Lowest DD</option>
             </select>
           </div>
         </div>

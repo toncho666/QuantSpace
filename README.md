@@ -48,19 +48,6 @@
 - Accent: `linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)`
 - Success: `linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)`
 
-### Типографика
-
-**Display Hero:**
-- Font-weight: 200
-- Letter-spacing: -0.05em
-- Gradient text с анимацией
-- Size: clamp(3rem, 10vw, 8rem)
-
-**Metrics:**
-- Monospace font (JetBrains Mono)
-- Tabular nums для выравнивания
-- Gradient coloring для позитивных значений
-
 ## 📊 Advanced Analytics
 
 ### 20+ метрик для каждой стратегии
@@ -108,7 +95,32 @@ function generateGrowingEquityCurve(start, end, volatility, points) {
 }
 ```
 
-## 🆕 Новая страница сравнения
+### Единый формат графиков
+
+Все графики используют чистые числовые значения на осях Y без форматирования:
+```typescript
+<YAxis tickFormatter={(value) => value.toFixed(0)} />
+```
+
+## 🆕 Страницы
+
+### `/algorithms` — Полный каталог стратегий
+
+**Функциональность:**
+- Все 10 стратегий с детальными метриками
+- Фильтры:
+  - Risk Profile (Conservative, Moderate, Aggressive)
+  - Status (Backtest, Paper, Live)
+  - Market (Futures, Crypto, Forex, Equities)
+- Сортировка по метрикам:
+  - Return %
+  - Sharpe Ratio
+  - Win Rate
+  - Profit Factor
+  - Max Drawdown (lowest first)
+- Счётчик показанных стратегий
+- Мини-графики equity curves
+- Детальные метрики для каждой стратегии
 
 ### `/compare` — Advanced Comparison
 
@@ -116,45 +128,32 @@ function generateGrowingEquityCurve(start, end, volatility, points) {
 - Выбор до 5 алгоритмов для сравнения
 - Фильтрация по risk profile
 - Сортировка по любой метрике
-- Radar chart для визуального сравнения
-- Overlay equity curves
-- Детальная таблица метрик
+- **Radar Chart** — визуальное сравнение 6 ключевых метрик
+- **Equity Curves Overlay** — все кривые на одном графике
+- **Detailed Metrics Table** — 9 колонок с основными показателями
 
-**Визуализации:**
-- Radar Chart: 6 ключевых метрик на одном графике
-- Equity Curves: overlay всех выбранных стратегий
-- Metrics Table: 9 колонок с основными показателями
+### `/algorithms/[slug]` — Детальная страница алгоритма
 
-## 📱 Страницы
-
-### Landing (новая версия)
-- Hero с gradient mesh background
-- Bento grid с 5 карточками алгоритмов
-- Featured algorithm с большим графиком
-- Metrics showcase (8 карточек)
-- Animated gradient text
-- Interactive hover effects
-
-### Algorithms
-- Список всех 10 стратегий
-- Фильтры по risk, status, market
-- Мини-графики с правильным Y-axis domain
-- Детальные метрики
-
-### Algorithm Detail
+**Содержимое:**
 - Полное описание стратегии
 - Equity curve с правильным масштабированием
-- Все 20+ метрик
+- **ВСЕ 20+ метрик** в 4 секциях:
+  1. Performance Metrics (8 метрик)
+  2. Advanced Risk Metrics (8 метрик)
+  3. Statistical Metrics (8 метрик)
+  4. Costs & Execution (2 метрики)
 - Signal logic
 - Limitations
 - Pricing
 
-### Compare (НОВАЯ)
-- Выбор алгоритмов для сравнения
-- Radar chart
-- Equity curves overlay
-- Детальная таблица метрик
-- Сортировка и фильтрация
+### Landing
+- Hero с gradient mesh background
+- Bento grid с 5 карточками алгоритмов
+- Featured algorithm с большим графиком
+- Metrics showcase (8 карточек)
+- Advanced metrics section
+- CTA с gradient border анимацией
+- Ссылки на /algorithms и /compare
 
 ### Dashboard
 - Overview с метриками
@@ -272,6 +271,14 @@ npm run build
 
 Переключение через кнопку в header.
 
+## 📈 Навигация
+
+**Главное меню:**
+- Algorithms — полный каталог всех стратегий с фильтрами
+- Compare — сравнение алгоритмов по метрикам
+- Bot Shop — маркетплейс торговых ботов
+- Dashboard — личный кабинет
+
 ## ⚠️ Дисклеймер
 
 Все данные являются синтетическими демо-данными. Это не реальные торговые результаты. Торговля связана с риском убытков.
@@ -282,41 +289,25 @@ npm run build
 
 ## 🔄 Последние изменения
 
-### Major Update 2026
+### Update: Метрики и фильтрация
 
-✅ **Полная переделка дизайна с нуля**
-- Bento grid layouts
-- Glassmorphism эффекты
-- Gradient mesh backgrounds
-- Advanced animations
+✅ **Все 20+ метрик на странице каждого алгоритма**
+- Performance Metrics (8 метрик)
+- Advanced Risk Metrics (8 метрик)
+- Statistical Metrics (8 метрик)
+- Costs & Execution (2 метрики)
 
-✅ **Только растущие графики**
-- Убраны все просадки
-- Гарантированный рост equity curves
-- Более позитивное визуальное восприятие
+✅ **Единый формат графиков**
+- Чистые числовые значения на осях Y
+- Без форматирования (%, $, и т.д.)
+- tickFormatter для всех графиков
 
-✅ **20+ аналитических метрик**
-- Sharpe, Sortino, Calmar ratios
-- Recovery factor, expectancy
-- Skewness, kurtosis
-- Risk of ruin, tail ratio
-- И многие другие
+✅ **Расширенная фильтрация на /algorithms**
+- Фильтр по Market (Futures, Crypto, Forex, Equities)
+- Сортировка по 5 метрикам
+- Счётчик показанных стратегий
+- Все 10 стратегий отображаются
 
-✅ **Новая страница сравнения**
-- Radar charts
-- Equity curves overlay
-- Детальная таблица метрик
-- Сортировка и фильтрация
-
-✅ **10 стратегий**
-- Разнообразные классы стратегий
-- Разные risk profiles
-- Разные рынки и таймфреймы
-- Все с полными метриками
-
-✅ **Передовые UI/UX техники**
-- Interactive data visualization
-- Micro-interactions
-- Scroll-triggered animations
-- Spring physics
-- 3D transforms
+✅ **Навигация**
+- Добавлена ссылка на /compare в главное меню
+- Все основные страницы доступны из навигации

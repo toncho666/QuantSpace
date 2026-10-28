@@ -153,12 +153,19 @@ export function Compare() {
               <h3 className="text-xl font-semibold text-primary mb-6">Equity Curves</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <AreaChart>
-                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+                  <XAxis 
+                    dataKey="day" 
+                    tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
+                    axisLine={false} 
+                    tickLine={false}
+                    tickFormatter={(value) => value.toString()}
+                  />
                   <YAxis 
                     tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
                     axisLine={false} 
                     tickLine={false}
                     domain={['auto', 'auto']}
+                    tickFormatter={(value) => value.toFixed(0)}
                   />
                   <Tooltip 
                     contentStyle={{ 
@@ -167,6 +174,7 @@ export function Compare() {
                       borderRadius: '8px',
                       fontSize: '12px'
                     }} 
+                    formatter={(value: number) => [value.toFixed(2)]}
                   />
                   {selectedData.map((algo, i) => {
                     const chartData = algo.equityCurve.map((v, idx) => ({ day: idx, [algo.name]: v }));

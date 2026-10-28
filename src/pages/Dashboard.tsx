@@ -112,14 +112,24 @@ function OverviewTab() {
         <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={equityData}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-base)" />
-            <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+            <XAxis 
+              dataKey="day" 
+              tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
+              axisLine={false} 
+              tickLine={false}
+              tickFormatter={(value) => value.toString()}
+            />
             <YAxis 
               tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
               axisLine={false} 
               tickLine={false}
               domain={['auto', 'auto']}
+              tickFormatter={(value) => value.toFixed(0)}
             />
-            <Tooltip contentStyle={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-base)', borderRadius: '8px', fontSize: '12px' }} />
+            <Tooltip 
+              contentStyle={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-base)', borderRadius: '8px', fontSize: '12px' }}
+              formatter={(value: number) => [value.toFixed(2), 'Equity']}
+            />
             <Area type="monotone" dataKey="equity" stroke="#34d399" fill="none" strokeWidth={1.5} dot={false} />
           </AreaChart>
         </ResponsiveContainer>

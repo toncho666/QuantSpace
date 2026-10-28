@@ -23,7 +23,7 @@ function MiniChart({ data, color = '#10b981' }: { data: number[]; color?: string
             <stop offset="100%" stopColor={color} stopOpacity={0} />
           </linearGradient>
         </defs>
-        <YAxis domain={[min - buffer, max + buffer]} hide />
+        <YAxis domain={[min - buffer, max + buffer]} hide tickFormatter={(value) => value.toFixed(0)} />
         <Area type="monotone" dataKey="y" stroke={color} fill="url(#chartGradient)" strokeWidth={2} dot={false} />
       </AreaChart>
     </ResponsiveContainer>

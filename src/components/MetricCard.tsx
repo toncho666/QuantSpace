@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 
 interface MetricCardProps {
   label: string;
@@ -65,6 +65,7 @@ export function MetricCard({
                   <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
                 </linearGradient>
               </defs>
+              <YAxis domain={['auto', 'auto']} hide tickFormatter={(value) => value.toFixed(0)} />
               <Area 
                 type="monotone" 
                 dataKey="y" 
