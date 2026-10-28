@@ -222,8 +222,8 @@ function AdminSignals() {
           <span className="label text-muted mb-4 block">Management</span>
           <h2 className="display-md text-4xl text-primary">Signals</h2>
         </div>
-        <button className="px-5 py-2 rounded-full text-[12px] font-medium bg-primary hover:opacity-90 transition-opacity">
-          Publish Signal
+        <button className="btn-gradient px-6 py-3 rounded-full text-[13px] font-semibold">
+          Publish Signal →
         </button>
       </div>
 

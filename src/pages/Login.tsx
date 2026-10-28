@@ -74,9 +74,9 @@ export function Login() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 rounded-full text-[13px] font-medium bg-primary hover:opacity-90 transition-opacity"
+            className="btn-cta w-full py-4 rounded-full text-[15px] font-bold"
           >
-            Sign in
+            Sign In →
           </button>
         </form>
 

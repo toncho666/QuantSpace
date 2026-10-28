@@ -60,16 +60,16 @@ export function Landing() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="btn-gradient px-8 py-4 rounded-full text-[15px] font-medium flex items-center gap-2"
+                      className="btn-cta px-10 py-5 rounded-full text-[17px] font-semibold flex items-center gap-3"
                     >
-                      Explore Algorithms <ArrowRight className="w-5 h-5" />
+                      Start Trading <ArrowRight className="w-6 h-6" />
                     </motion.button>
                   </Link>
                   <Link to="/compare">
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="glass px-8 py-4 rounded-full text-[15px] font-medium text-primary"
+                      className="glass px-8 py-5 rounded-full text-[15px] font-medium text-primary border-2 border-primary/20"
                     >
                       Compare Strategies
                     </motion.button>
@@ -215,9 +215,9 @@ export function Landing() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-primary px-8 py-4 rounded-full text-[15px] font-medium inline-flex items-center gap-2"
+                  className="btn-gradient px-10 py-5 rounded-full text-[17px] font-semibold inline-flex items-center gap-3"
                 >
-                  View All Algorithms <ArrowRight className="w-5 h-5" />
+                  View All Algorithms <ArrowRight className="w-6 h-6" />
                 </motion.button>
               </Link>
             </div>
@@ -272,9 +272,9 @@ export function Landing() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-gradient px-8 py-4 rounded-full text-[15px] font-medium inline-flex items-center gap-2"
+                  className="btn-gradient px-10 py-5 rounded-full text-[17px] font-semibold inline-flex items-center gap-3"
                 >
-                  Compare All Metrics <ArrowRight className="w-5 h-5" />
+                  Compare All Metrics <ArrowRight className="w-6 h-6" />
                 </motion.button>
               </Link>
             </div>
@@ -298,16 +298,16 @@ export function Landing() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="btn-gradient px-10 py-5 rounded-full text-[16px] font-medium"
+                    className="btn-cta px-12 py-6 rounded-full text-[18px] font-bold"
                   >
-                    Get Started Free
+                    Get Started Free →
                   </motion.button>
                 </Link>
                 <Link to="/algorithms">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="glass px-10 py-5 rounded-full text-[16px] font-medium text-primary"
+                    className="glass px-10 py-6 rounded-full text-[16px] font-medium text-primary border-2 border-primary/20"
                   >
                     View Algorithms
                   </motion.button>

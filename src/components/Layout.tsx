@@ -73,9 +73,9 @@ export function Layout() {
                   </Link>
                   <Link
                     to="/register"
-                    className="text-[13px] font-medium px-4 py-1.5 rounded-full bg-primary text-white hover:opacity-90 transition-opacity"
+                    className="btn-gradient text-[13px] font-semibold px-5 py-2 rounded-full"
                   >
-                    Get started
+                    Get Started →
                   </Link>
                 </div>
               )}
@@ -121,7 +121,7 @@ export function Layout() {
                 ))}
                 <div className="pt-4 flex gap-4">
                   <Link to="/login" className="text-sm text-primary">Sign in</Link>
-                  <Link to="/register" className="text-sm font-medium px-4 py-1.5 rounded-full bg-primary text-white">Get started</Link>
+                  <Link to="/register" className="btn-gradient text-sm font-semibold px-5 py-2 rounded-full">Get Started →</Link>
                 </div>
               </div>
             </motion.div>

@@ -58,8 +58,8 @@ export function AlgorithmDetail() {
                 <p className="metric text-4xl text-profit">+{algo.metrics.returnPct}%</p>
                 <p className="text-[11px] text-muted mt-1">{algo.metrics.observationPeriod}</p>
               </div>
-              <Link to="/register" className="block text-center py-3 rounded-full text-[13px] font-medium bg-primary hover:opacity-90 transition-opacity">
-                Subscribe
+              <Link to="/register" className="btn-cta block text-center py-4 rounded-full text-[15px] font-bold">
+                Subscribe Now →
               </Link>
             </div>
           </div>
@@ -226,8 +226,8 @@ export function AlgorithmDetail() {
               <p className="metric text-4xl text-primary">${algo.pricing.license}</p>
             </div>
           )}
-          <Link to="/register" className="inline-block px-8 py-3 rounded-full text-[13px] font-medium bg-primary hover:opacity-90 transition-opacity">
-            Subscribe now
+          <Link to="/register" className="btn-cta inline-block px-12 py-5 rounded-full text-[17px] font-bold">
+            Subscribe Now →
           </Link>
         </div>
       </FadeIn>
