@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useTheme } from '../App';
-import { BarChart3, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '../components/Toast';
 
 export function Login() {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,113 +12,78 @@ export function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would call the auth API
-    showToast('info', 'Demo mode: Authentication is simulated. In production, this connects to a secure backend.');
+    showToast('info', 'Demo mode: Authentication is simulated.');
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-6 py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-center mb-8"
-        >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <motion.div
-              animate={{ rotate: [0, -10, 10, -10, 0] }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <BarChart3 className="w-8 h-8 text-navy-400" />
-            </motion.div>
-          </div>
-          <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className={`mt-2 text-sm ${isDark ? 'text-graphite-400' : 'text-graphite-600'}`}>
-            Sign in to access your trading dashboard
+        <div className="text-center mb-12">
+          <p className="text-[15px] font-medium tracking-tight mb-4 text-primary">
+            Quant<span className="text-accent">Space</span>
           </p>
-        </motion.div>
+          <h1 className="display-md text-4xl text-primary mb-3">Welcome back</h1>
+          <p className="text-[14px] font-light text-secondary">
+            Sign in to access your dashboard
+          </p>
+        </div>
 
-        <motion.form
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          onSubmit={handleSubmit}
-          className={`rounded-xl p-6 ${isDark ? 'bg-graphite-900/50 border border-graphite-800' : 'bg-white border border-graphite-200 shadow-sm'}`}
-        >
-          <div className="space-y-4">
-            <div>
-              <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-graphite-300' : 'text-graphite-700'}`}>Email</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="text-[11px] uppercase tracking-wider text-muted mb-2 block">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="trader@example.com"
+              className="w-full px-4 py-3 rounded-full text-[14px] bg-surface-theme border border-base-theme text-primary placeholder:text-subtle focus:outline-none focus:border-accent/50 transition-colors"
+              required
+            />
+          </div>
+          <div>
+            <label className="text-[11px] uppercase tracking-wider text-muted mb-2 block">Password</label>
+            <div className="relative">
               <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="trader@example.com"
-                className={`w-full px-4 py-2.5 rounded-lg text-sm ${isDark ? 'bg-graphite-800 border-graphite-700 text-graphite-200 placeholder:text-graphite-600' : 'bg-graphite-50 border-graphite-300 text-graphite-900 placeholder:text-graphite-400'} border focus:outline-none focus:ring-2 focus:ring-navy-500/50`}
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-3 pr-11 rounded-full text-[14px] bg-surface-theme border border-base-theme text-primary placeholder:text-subtle focus:outline-none focus:border-accent/50 transition-colors"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
-            <div>
-              <label className={`block text-sm font-medium mb-1.5 ${isDark ? 'text-graphite-300' : 'text-graphite-700'}`}>Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className={`w-full px-4 py-2.5 pr-10 rounded-lg text-sm ${isDark ? 'bg-graphite-800 border-graphite-700 text-graphite-200 placeholder:text-graphite-600' : 'bg-graphite-50 border-graphite-300 text-graphite-900 placeholder:text-graphite-400'} border focus:outline-none focus:ring-2 focus:ring-navy-500/50`}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-graphite-500"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" className="rounded border-graphite-600" />
-                <span className={`text-sm ${isDark ? 'text-graphite-400' : 'text-graphite-600'}`}>Remember me</span>
-              </label>
-              <a href="#" className="text-sm text-navy-400 hover:text-navy-300">Forgot password?</a>
-            </div>
+          </div>
+          <div className="flex items-center justify-between text-[13px]">
+            <label className="flex items-center gap-2 text-secondary cursor-pointer">
+              <input type="checkbox" className="rounded border-base-theme" />
+              Remember me
+            </label>
+            <a href="#" className="text-secondary hover:text-primary transition-colors">Forgot password?</a>
           </div>
           <button
             type="submit"
-            className="w-full mt-6 py-2.5 rounded-lg bg-navy-500 text-white font-medium text-sm hover:bg-navy-600 transition-colors"
+            className="btn-cta w-full py-4 rounded-full text-[15px] font-bold"
           >
-            Sign In
+            Sign In →
           </button>
-        </motion.form>
+        </form>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className={`text-center text-sm mt-6 ${isDark ? 'text-graphite-500' : 'text-graphite-600'}`}
-        >
+        <p className="text-center text-[13px] text-secondary mt-8">
           Don't have an account?{' '}
-          <Link to="/register" className="text-navy-400 hover:text-navy-300 font-medium">Create one</Link>
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className={`mt-8 p-4 rounded-lg text-center ${isDark ? 'bg-graphite-900/30' : 'bg-graphite-50'}`}
-        >
-          <p className={`text-xs ${isDark ? 'text-graphite-600' : 'text-graphite-400'}`}>
-            Demo mode — authentication is simulated. In production, this connects to a secure backend with JWT sessions, rate limiting, and 2FA support.
-          </p>
-        </motion.div>
+          <Link to="/register" className="text-primary hover:text-accent transition-colors">Create one</Link>
+        </p>
       </motion.div>
     </div>
   );
