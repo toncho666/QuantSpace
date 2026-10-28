@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
-import { Moon, Sun, Menu, X, BarChart3 } from 'lucide-react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -10,65 +10,75 @@ export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
   const isAuth = location.pathname === '/login' || location.pathname === '/register';
+  const isDark = theme === 'dark';
 
   const navLinks = [
     { to: '/algorithms', label: 'Algorithms' },
     { to: '/shop', label: 'Bot Shop' },
+    { to: '/dashboard', label: 'Dashboard' },
   ];
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-navy-950 text-graphite-200' : 'bg-white text-graphite-900'}`}>
-      {/* Header */}
-      <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-navy-950/80' : 'bg-white/80'} backdrop-blur-xl border-b ${theme === 'dark' ? 'border-graphite-800' : 'border-graphite-200'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen ${isDark ? 'bg-base text-neutral-100' : 'bg-light-base text-neutral-900'}`}>
+      {/* Header — minimal, editorial */}
+      <header className={`fixed top-0 left-0 right-0 z-50 ${isDark ? 'bg-base/80' : 'bg-light-base/80'} backdrop-blur-xl`}>
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <BarChart3 className="w-6 h-6 text-navy-400" />
-              <span className="text-lg font-semibold tracking-tight">QuantSpace</span>
+            {/* Logo — text only, editorial */}
+            <Link to="/" className="flex items-center gap-2 group">
+              <span className="text-[15px] font-medium tracking-tight">
+                Quant<span className="text-accent">Space</span>
+              </span>
             </Link>
 
             {/* Desktop Nav */}
             {!isDashboard && !isAuth && (
-              <nav className="hidden md:flex items-center gap-8">
+              <nav className="hidden md:flex items-center gap-10">
                 {navLinks.map(link => (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`text-sm font-medium transition-colors ${
+                    className={`text-[13px] font-normal tracking-wide transition-colors relative ${
                       location.pathname === link.to
-                        ? 'text-navy-400'
-                        : theme === 'dark' ? 'text-graphite-400 hover:text-graphite-200' : 'text-graphite-600 hover:text-graphite-900'
+                        ? 'text-neutral-100'
+                        : isDark ? 'text-neutral-500 hover:text-neutral-200' : 'text-neutral-500 hover:text-neutral-800'
                     }`}
                   >
                     {link.label}
+                    {location.pathname === link.to && (
+                      <motion.div
+                        layoutId="nav-indicator"
+                        className="absolute -bottom-[21px] left-0 right-0 h-[0.5px] bg-accent"
+                      />
+                    )}
                   </Link>
                 ))}
               </nav>
             )}
 
             {/* Right side */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-lg transition-colors ${theme === 'dark' ? 'hover:bg-graphite-800' : 'hover:bg-graphite-100'}`}
+                className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-white/5' : 'hover:bg-black/5'}`}
+                aria-label="Toggle theme"
               >
-                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
 
               {!isDashboard && !isAuth && (
-                <div className="hidden md:flex items-center gap-3">
+                <div className="hidden md:flex items-center gap-4">
                   <Link
                     to="/login"
-                    className={`text-sm font-medium ${theme === 'dark' ? 'text-graphite-400 hover:text-graphite-200' : 'text-graphite-600 hover:text-graphite-900'}`}
+                    className={`text-[13px] font-normal ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}
                   >
-                    Sign In
+                    Sign in
                   </Link>
                   <Link
                     to="/register"
-                    className="text-sm font-medium px-4 py-2 rounded-lg bg-navy-500 text-white hover:bg-navy-600 transition-colors"
+                    className="text-[13px] font-medium px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-900 hover:bg-white transition-colors"
                   >
-                    Get Started
+                    Get started
                   </Link>
                 </div>
               )}
@@ -78,6 +88,7 @@ export function Layout() {
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="md:hidden p-2"
+                  aria-label="Toggle menu"
                 >
                   {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                 </button>
@@ -93,35 +104,30 @@ export function Layout() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`md:hidden border-t overflow-hidden ${theme === 'dark' ? 'border-graphite-800 bg-navy-950' : 'border-graphite-200 bg-white'}`}
+              transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className={`md:hidden border-t ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'} overflow-hidden`}
             >
-              <div className="px-4 py-4 space-y-3">
+              <div className="px-6 py-6 space-y-4">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.to}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
+                    transition={{ delay: i * 0.05 }}
                   >
                     <Link
                       to={link.to}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block text-sm font-medium py-2"
+                      className="block text-lg font-light py-2"
                     >
                       {link.label}
                     </Link>
                   </motion.div>
                 ))}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="pt-3 border-t border-graphite-800 flex gap-3"
-                >
-                  <Link to="/login" className="text-sm font-medium py-2">Sign In</Link>
-                  <Link to="/register" className="text-sm font-medium px-4 py-2 rounded-lg bg-navy-500 text-white">Get Started</Link>
-                </motion.div>
+                <div className="pt-4 flex gap-4">
+                  <Link to="/login" className="text-sm">Sign in</Link>
+                  <Link to="/register" className="text-sm font-medium px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-900">Get started</Link>
+                </div>
               </div>
             </motion.div>
           )}
@@ -129,56 +135,55 @@ export function Layout() {
       </header>
 
       {/* Main content */}
-      <main>
+      <main className={isDashboard || isAuth ? '' : 'pt-16'}>
         <Outlet />
       </main>
 
-      {/* Footer */}
+      {/* Footer — minimal, editorial */}
       {!isDashboard && !isAuth && (
-        <footer className={`border-t ${theme === 'dark' ? 'border-graphite-800 bg-navy-950' : 'border-graphite-200 bg-graphite-50'}`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <BarChart3 className="w-5 h-5 text-navy-400" />
-                  <span className="font-semibold">QuantSpace</span>
-                </div>
-                <p className={`text-sm ${theme === 'dark' ? 'text-graphite-500' : 'text-graphite-600'}`}>
-                  Systematic algorithmic trading platform with transparent results and professional-grade tools.
+        <footer className={`border-t ${isDark ? 'border-white/5' : 'border-black/5'}`}>
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[15px] font-medium tracking-tight mb-3">
+                  Quant<span className="text-accent">Space</span>
+                </p>
+                <p className={`text-[13px] leading-relaxed ${isDark ? 'text-neutral-500' : 'text-neutral-600'}`}>
+                  Systematic algorithmic trading with transparent results.
                 </p>
               </div>
               <div>
-                <h4 className="font-medium text-sm mb-3">Platform</h4>
-                <div className="space-y-2">
-                  <Link to="/algorithms" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Algorithms</Link>
-                  <Link to="/shop" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Bot Shop</Link>
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>API Docs</a>
+                <p className="label text-neutral-500 mb-4">Platform</p>
+                <div className="space-y-3">
+                  <Link to="/algorithms" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Algorithms</Link>
+                  <Link to="/shop" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Bot Shop</Link>
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>API</a>
                 </div>
               </div>
               <div>
-                <h4 className="font-medium text-sm mb-3">Legal</h4>
-                <div className="space-y-2">
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Privacy Policy</a>
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Terms of Service</a>
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Risk Disclosure</a>
+                <p className="label text-neutral-500 mb-4">Legal</p>
+                <div className="space-y-3">
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Privacy</a>
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Terms</a>
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Risk Disclosure</a>
                 </div>
               </div>
               <div>
-                <h4 className="font-medium text-sm mb-3">Contact</h4>
-                <div className="space-y-2">
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>support@quantspace.io</a>
-                  <a href="#" className={`block text-sm ${theme === 'dark' ? 'text-graphite-500 hover:text-graphite-300' : 'text-graphite-600 hover:text-graphite-900'}`}>Documentation</a>
+                <p className="label text-neutral-500 mb-4">Contact</p>
+                <div className="space-y-3">
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>support@quantspace.io</a>
+                  <a href="#" className={`block text-[13px] ${isDark ? 'text-neutral-400 hover:text-neutral-100' : 'text-neutral-600 hover:text-neutral-900'} transition-colors`}>Documentation</a>
                 </div>
               </div>
             </div>
-            <div className={`mt-8 pt-8 border-t ${theme === 'dark' ? 'border-graphite-800' : 'border-graphite-200'}`}>
-              <p className={`text-xs ${theme === 'dark' ? 'text-graphite-600' : 'text-graphite-500'}`}>
-                <strong>Risk Disclosure:</strong> Trading financial instruments involves substantial risk of loss and is not suitable for all investors. 
-                Past performance is not indicative of future results. The content on this platform is for informational purposes only and does not constitute financial advice. 
-                Algorithmic trading results shown are based on historical data and backtesting — actual results may vary significantly.
+
+            {/* Risk disclosure */}
+            <div className={`pt-8 border-t ${isDark ? 'border-white/5' : 'border-black/5'}`}>
+              <p className={`text-[11px] leading-relaxed max-w-3xl ${isDark ? 'text-neutral-600' : 'text-neutral-500'}`}>
+                <span className="font-medium">Risk Disclosure:</span> Trading financial instruments involves substantial risk of loss. Past performance is not indicative of future results. Algorithmic trading results shown are based on historical backtesting and paper trading. Actual results may differ significantly. You should only trade with capital you can afford to lose. QuantSpace provides tools and analysis — not financial advice.
               </p>
-              <p className={`text-xs mt-2 ${theme === 'dark' ? 'text-graphite-700' : 'text-graphite-400'}`}>
-                © 2026 QuantSpace. All rights reserved.
+              <p className={`text-[11px] mt-4 ${isDark ? 'text-neutral-700' : 'text-neutral-400'}`}>
+                © 2026 QuantSpace
               </p>
             </div>
           </div>

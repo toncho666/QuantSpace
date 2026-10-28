@@ -46,35 +46,35 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   };
 
   const colors = {
-    success: 'bg-profit/10 border-profit/30 text-profit',
-    error: 'bg-loss/10 border-loss/30 text-loss',
-    info: 'bg-navy-400/10 border-navy-400/30 text-navy-400',
-    warning: 'bg-warning/10 border-warning/30 text-warning',
+    success: 'border-profit/20 bg-profit/5 text-profit',
+    error: 'border-loss/20 bg-loss/5 text-loss',
+    info: 'border-info/20 bg-info/5 text-info',
+    warning: 'border-warning/20 bg-warning/5 text-warning',
   };
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-50 space-y-2 max-w-sm">
+      <div className="fixed bottom-6 right-6 z-[70] space-y-2 max-w-sm">
         <AnimatePresence>
           {toasts.map(toast => {
             const Icon = icons[toast.type];
             return (
               <motion.div
                 key={toast.id}
-                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                className={`flex items-start gap-3 p-4 rounded-lg border backdrop-blur-sm ${colors[toast.type]}`}
+                className={`flex items-start gap-3 p-4 rounded-lg border backdrop-blur-xl ${colors[toast.type]}`}
               >
-                <Icon className="w-5 h-5 shrink-0 mt-0.5" />
-                <p className="text-sm flex-1">{toast.message}</p>
+                <Icon className="w-4 h-4 shrink-0 mt-0.5" />
+                <p className="text-[13px] flex-1">{toast.message}</p>
                 <button
                   onClick={() => removeToast(toast.id)}
                   className="shrink-0 hover:opacity-70 transition-opacity"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               </motion.div>
             );
