@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTheme } from '../App';
 import { algorithms, subscriptionPlans, faqItems, DEMO_DISCLAIMER } from '../data/mockData';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,9 +11,14 @@ import { AnimatedCounter } from '../components/AnimatedCounter';
 
 function MiniChart({ data }: { data: number[] }) {
   const chartData = data.map((v, i) => ({ x: i, y: v }));
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const buffer = (max - min) * 0.15;
+  
   return (
     <ResponsiveContainer width="100%" height={48}>
       <AreaChart data={chartData}>
+        <YAxis domain={[min - buffer, max + buffer]} hide />
         <Area type="monotone" dataKey="y" stroke="currentColor" fill="none" strokeWidth={1} dot={false} />
       </AreaChart>
     </ResponsiveContainer>
@@ -116,6 +121,34 @@ export function Landing() {
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Supported Exchanges */}
+      <section className="py-16 border-b border-base-theme">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="label text-muted mb-4">Connected Exchanges</p>
+              <h3 className="text-2xl font-light text-primary">Trade across major markets</h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+              {['Binance', 'Bybit', 'OKX', 'Interactive Brokers', 'CME', 'Deribit'].map((exchange, i) => (
+                <motion.div
+                  key={exchange}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-lg font-medium text-muted hover:text-primary transition-colors">
+                    {exchange}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -331,6 +364,112 @@ export function Landing() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-32 bg-base-theme">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <FadeIn>
+            <div className="mb-20">
+              <span className="label text-muted mb-4 block">Traders</span>
+              <h2 className="display-lg text-5xl lg:text-6xl text-primary">
+                What they say.
+              </h2>
+            </div>
+          </FadeIn>
+
+          <StaggerContainer className="grid md:grid-cols-3 gap-6" staggerDelay={0.15}>
+            {[
+              {
+                quote: "The transparency is what sold me. Every metric is documented, every result is auditable. No black boxes.",
+                author: "Alex Chen",
+                role: "Quantitative Trader",
+                initials: "AC"
+              },
+              {
+                quote: "I've tried many signal services. QuantSpace is the first one that actually shows the methodology behind each signal.",
+                author: "Maria Santos",
+                role: "Portfolio Manager",
+                initials: "MS"
+              },
+              {
+                quote: "The risk management built into every strategy gives me confidence. I know exactly what I'm getting into.",
+                author: "James Wilson",
+                role: "Independent Trader",
+                initials: "JW"
+              },
+            ].map((testimonial, i) => (
+              <StaggerItem key={i}>
+                <div className="p-8 border border-base-theme bg-base-theme h-full flex flex-col">
+                  <p className="text-[15px] font-light leading-relaxed text-secondary flex-1 mb-6">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="flex items-center gap-3 pt-6 border-t border-base-theme">
+                    <div className="w-10 h-10 rounded-full bg-surface-theme flex items-center justify-center">
+                      <span className="text-[11px] font-medium text-muted">{testimonial.initials}</span>
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-medium text-primary">{testimonial.author}</p>
+                      <p className="text-[11px] text-muted">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* Technology Stack */}
+      <section className="py-32 bg-surface-theme">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <FadeIn>
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <span className="label text-muted mb-4 block">Infrastructure</span>
+                <h2 className="display-lg text-5xl lg:text-6xl text-primary mb-6">
+                  Built for<br />performance.
+                </h2>
+                <p className="text-[17px] font-light leading-relaxed text-secondary mb-8">
+                  Enterprise-grade infrastructure designed for low-latency signal delivery and reliable execution.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Signal Latency', value: '< 50ms' },
+                    { label: 'Uptime', value: '99.9%' },
+                    { label: 'Data Centers', value: '3 regions' },
+                    { label: 'API Rate Limit', value: '1000 req/min' },
+                  ].map((stat, i) => (
+                    <div key={i} className="flex items-center justify-between py-3 border-b border-base-theme">
+                      <span className="text-[13px] text-secondary">{stat.label}</span>
+                      <span className="metric text-sm text-primary">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { name: 'Low Latency', desc: 'Sub-50ms signal delivery via WebSocket' },
+                  { name: 'High Availability', desc: '99.9% uptime with redundant systems' },
+                  { name: 'Secure API', desc: 'End-to-end encryption and rate limiting' },
+                  { name: 'Scalable', desc: 'Handles thousands of concurrent connections' },
+                ].map((feature, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="p-6 border border-base-theme bg-base-theme"
+                  >
+                    <h4 className="text-[14px] font-medium text-primary mb-2">{feature.name}</h4>
+                    <p className="text-[12px] text-muted leading-relaxed">{feature.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

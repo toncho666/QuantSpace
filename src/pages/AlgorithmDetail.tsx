@@ -83,7 +83,15 @@ export function AlgorithmDetail() {
             <AreaChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-base)" />
               <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+              <YAxis 
+                tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
+                axisLine={false} 
+                tickLine={false}
+                domain={[
+                  (dataMin: number) => dataMin - (Math.max(...algo.equityCurve) - dataMin) * 0.1,
+                  (dataMax: number) => dataMax + (dataMax - Math.min(...algo.equityCurve)) * 0.1
+                ]}
+              />
               <Tooltip contentStyle={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-base)', borderRadius: '8px', fontSize: '12px' }} />
               <Area type="monotone" dataKey="equity" stroke="#34d399" fill="none" strokeWidth={1.5} dot={false} />
             </AreaChart>

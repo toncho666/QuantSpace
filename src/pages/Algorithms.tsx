@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { algorithms } from '../data/mockData';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -8,9 +8,14 @@ import { FadeIn } from '../components/FadeIn';
 
 function MiniChart({ data }: { data: number[] }) {
   const chartData = data.map((v, i) => ({ x: i, y: v }));
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const buffer = (max - min) * 0.15;
+  
   return (
     <ResponsiveContainer width="100%" height={40}>
       <AreaChart data={chartData}>
+        <YAxis domain={[min - buffer, max + buffer]} hide />
         <Area type="monotone" dataKey="y" stroke="currentColor" fill="none" strokeWidth={1} dot={false} />
       </AreaChart>
     </ResponsiveContainer>
