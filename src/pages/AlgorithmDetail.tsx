@@ -1,13 +1,20 @@
 import { useParams, Link } from 'react-router-dom';
 import { algorithms, DEMO_DISCLAIMER } from '../data/mockData';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Shield, BarChart3, Activity, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FadeIn } from '../components/FadeIn';
+import { useState } from 'react';
+import { DrawdownChart } from '../components/DrawdownChart';
+import { MonthlyReturnsHeatmap } from '../components/MonthlyReturnsHeatmap';
+import { RollingSharpeChart } from '../components/RollingSharpeChart';
+
+type TabId = 'overview' | 'trades' | 'risk' | 'robustness' | 'technical';
 
 export function AlgorithmDetail() {
   const { slug } = useParams();
   const algo = algorithms.find(a => a.slug === slug);
+  const [activeTab, setActiveTab] = useState<TabId>('overview');
 
   if (!algo) {
     return (
@@ -21,9 +28,25 @@ export function AlgorithmDetail() {
   }
 
   const chartData = algo.equityCurve.map((v, i) => ({ day: i + 1, equity: v }));
+  
+  // Generate drawdown curve if not present
+  const drawdownData = algo.drawdownCurve.length > 0 
+    ? algo.drawdownCurve 
+    : algo.equityCurve.map((value, i) => {
+        const peak = Math.max(...algo.equityCurve.slice(0, i + 1));
+        return ((value - peak) / peak) * 100;
+      });
+
+  const tabs = [
+    { id: 'overview' as TabId, label: 'Overview', icon: TrendingUp },
+    { id: 'trades' as TabId, label: 'Trade Statistics', icon: Activity },
+    { id: 'risk' as TabId, label: 'Risk Analysis', icon: Shield },
+    { id: 'robustness' as TabId, label: 'Robustness', icon: BarChart3 },
+    { id: 'technical' as TabId, label: 'Technical', icon: Activity },
+  ];
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
+    <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-12">
         <Link to="/algorithms" className="inline-flex items-center gap-2 text-[13px] text-muted hover:text-primary transition-colors">
           <ArrowLeft className="w-3.5 h-3.5" />
@@ -32,7 +55,7 @@ export function AlgorithmDetail() {
       </motion.div>
 
       <FadeIn>
-        <div className="grid lg:grid-cols-12 gap-12 mb-20">
+        <div className="grid lg:grid-cols-12 gap-12 mb-12">
           <div className="lg:col-span-8">
             <div className="flex items-center gap-3 mb-6">
               <span className={`text-[11px] uppercase tracking-wider px-3 py-1 rounded-full border ${
@@ -54,8 +77,8 @@ export function AlgorithmDetail() {
           <div className="lg:col-span-4 lg:pl-8">
             <div className="border-t border-base-theme pt-6">
               <div className="mb-6">
-                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Return</p>
-                <p className="metric text-4xl text-profit">+{algo.metrics.returnPct}%</p>
+                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Annual Return (CAGR)</p>
+                <p className="metric text-4xl text-profit">+{algo.metrics.cagr}%</p>
                 <p className="text-[11px] text-muted mt-1">{algo.metrics.observationPeriod}</p>
               </div>
               <Link to="/register" className="btn-cta block text-center py-4 rounded-full text-[15px] font-bold">
@@ -66,151 +89,288 @@ export function AlgorithmDetail() {
         </div>
       </FadeIn>
 
+      {/* Key Metrics Card */}
       <FadeIn delay={0.1}>
-        <div className="p-4 mb-12 flex items-center gap-3 border border-warning/20 bg-warning/5">
-          <span className="w-1.5 h-1.5 rounded-full bg-warning" />
-          <p className="text-[12px] text-warning">{DEMO_DISCLAIMER}</p>
+        <div className="glass rounded-2xl p-8 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Annual Return</p>
+              <p className="metric text-2xl text-profit">+{algo.metrics.cagr}%</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Max Drawdown</p>
+              <p className="metric text-2xl text-loss">-{algo.metrics.maxDrawdown}%</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Sharpe Ratio</p>
+              <p className="metric text-2xl text-primary">{algo.metrics.sharpeRatio}</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Profit Factor</p>
+              <p className="metric text-2xl text-primary">{algo.metrics.profitFactor}</p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Win Rate</p>
+              <p className="metric text-2xl text-primary">{algo.metrics.winRate}%</p>
+            </div>
+          </div>
         </div>
       </FadeIn>
 
+      {/* Regulatory Info */}
+      <FadeIn delay={0.15}>
+        <div className="p-4 mb-8 flex items-start gap-3 border border-warning/20 bg-warning/5 rounded-xl">
+          <AlertCircle className="w-5 h-5 text-warning mt-0.5 shrink-0" />
+          <div className="flex-1">
+            <p className="text-[13px] font-medium text-warning mb-1">
+              Results Type: {algo.regulatoryInfo.resultType.toUpperCase()}
+            </p>
+            <p className="text-[12px] text-secondary leading-relaxed">
+              {algo.regulatoryInfo.resultType === 'backtest' && 'Historical simulation based on past market data. Results are hypothetical and do not represent actual trading.'}
+              {algo.regulatoryInfo.resultType === 'paper' && 'Paper trading results from simulated execution. May differ from live trading due to execution risk and market impact.'}
+              {algo.regulatoryInfo.resultType === 'live' && 'Live trading results from actual market execution.'}
+            </p>
+            <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-4 text-[11px]">
+              <div>
+                <span className="text-muted">Test Period:</span>
+                <p className="text-secondary">{algo.regulatoryInfo.testStartDate} → {algo.regulatoryInfo.testEndDate}</p>
+              </div>
+              <div>
+                <span className="text-muted">Commission:</span>
+                <p className="text-secondary">{algo.regulatoryInfo.commission}%</p>
+              </div>
+              <div>
+                <span className="text-muted">Slippage:</span>
+                <p className="text-secondary">{algo.regulatoryInfo.slippage}%</p>
+              </div>
+              <div>
+                <span className="text-muted">Initial Capital:</span>
+                <p className="text-secondary">${algo.regulatoryInfo.initialCapital.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+
+      {/* Tabs */}
       <FadeIn delay={0.2}>
-        <div className="p-8 lg:p-12 border border-base-theme bg-base-theme mb-12">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-light text-primary">Equity Curve</h2>
-            <span className="text-[11px] text-muted">{algo.metrics.observationPeriod}</span>
-          </div>
-          <ResponsiveContainer width="100%" height={320}>
-            <AreaChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-base)" />
-              <XAxis 
-                dataKey="day" 
-                tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
-                axisLine={false} 
-                tickLine={false}
-                tickFormatter={(value) => value.toString()}
-              />
-              <YAxis 
-                tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} 
-                axisLine={false} 
-                tickLine={false}
-                domain={[
-                  (dataMin: number) => dataMin - (Math.max(...algo.equityCurve) - dataMin) * 0.1,
-                  (dataMax: number) => dataMax + (dataMax - Math.min(...algo.equityCurve)) * 0.1
-                ]}
-                tickFormatter={(value) => value.toFixed(0)}
-              />
-              <Tooltip 
-                contentStyle={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-base)', borderRadius: '8px', fontSize: '12px' }}
-                formatter={(value: number) => [value.toFixed(2), 'Equity']}
-              />
-              <Area type="monotone" dataKey="equity" stroke="#34d399" fill="none" strokeWidth={1.5} dot={false} />
-            </AreaChart>
-          </ResponsiveContainer>
+        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-5 py-3 rounded-full text-[13px] font-medium whitespace-nowrap transition-all ${
+                activeTab === tab.id
+                  ? 'btn-gradient text-white'
+                  : 'glass text-secondary hover:text-primary'
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
         </div>
       </FadeIn>
 
-      <FadeIn delay={0.3}>
-        <div className="mb-12">
-          <h2 className="text-xl font-light text-primary mb-6">Performance Metrics</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-base-theme mb-8">
-            {[
-              { label: 'Total Trades', value: algo.metrics.totalTrades },
-              { label: 'Win Rate', value: `${algo.metrics.winRate}%` },
-              { label: 'Profit Factor', value: algo.metrics.profitFactor },
-              { label: 'Max Drawdown', value: `-${algo.metrics.maxDrawdown}%` },
-              { label: 'Avg R:R', value: `${algo.metrics.avgRR}:1` },
-              { label: 'Sharpe Ratio', value: algo.metrics.sharpeRatio },
-              { label: 'Avg Win', value: `+${algo.metrics.avgWin}%` },
-              { label: 'Avg Loss', value: `-${algo.metrics.avgLoss}%` },
-            ].map((m, i) => (
-              <div key={i} className="p-6 bg-base-theme">
-                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
-                <p className="metric text-2xl text-primary">{m.value}</p>
-              </div>
-            ))}
+      {/* Tab Content */}
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {activeTab === 'overview' && (
+          <div className="space-y-8">
+            {/* Equity Curve */}
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Equity Curve</h3>
+              <ResponsiveContainer width="100%" height={320}>
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient id="equityGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-base)" />
+                  <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }} axisLine={false} tickLine={false} tickFormatter={(value) => value.toFixed(0)} />
+                  <Tooltip contentStyle={{ background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border-base)', borderRadius: '8px', fontSize: '12px' }} />
+                  <Area type="monotone" dataKey="equity" stroke="#10b981" fill="url(#equityGradient)" strokeWidth={2} dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Drawdown Curve */}
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Drawdown Curve</h3>
+              <DrawdownChart data={drawdownData} />
+            </div>
+
+            {/* Monthly Returns */}
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Monthly Returns</h3>
+              <MonthlyReturnsHeatmap data={algo.monthlyReturns} />
+            </div>
+
+            {/* Rolling Sharpe */}
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Rolling Sharpe Ratio</h3>
+              <RollingSharpeChart data={algo.rollingSharpe} />
+            </div>
           </div>
+        )}
 
-          <h2 className="text-xl font-light text-primary mb-6">Advanced Risk Metrics</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-base-theme mb-8">
-            {[
-              { label: 'Sortino Ratio', value: algo.metrics.sortinoRatio },
-              { label: 'Calmar Ratio', value: algo.metrics.calmarRatio },
-              { label: 'Recovery Factor', value: algo.metrics.recoveryFactor },
-              { label: 'Expectancy', value: `$${algo.metrics.expectancy}` },
-              { label: 'Risk of Ruin', value: `${(algo.metrics.riskOfRuin * 100).toFixed(2)}%` },
-              { label: 'Payoff Ratio', value: algo.metrics.payoffRatio },
-              { label: 'Tail Ratio', value: algo.metrics.tailRatio },
-              { label: 'Std Deviation', value: `${algo.metrics.standardDeviation}%` },
-            ].map((m, i) => (
-              <div key={i} className="p-6 bg-base-theme">
-                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
-                <p className="metric text-2xl text-primary">{m.value}</p>
-              </div>
-            ))}
+        {activeTab === 'trades' && (
+          <div className="glass rounded-2xl p-8">
+            <h3 className="text-xl font-semibold text-primary mb-6">Trade Statistics</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: 'Total Trades', value: algo.metrics.totalTrades },
+                { label: 'Win Rate', value: `${algo.metrics.winRate}%` },
+                { label: 'Profit Factor', value: algo.metrics.profitFactor },
+                { label: 'Expectancy', value: `$${algo.metrics.expectancy.toFixed(2)}` },
+                { label: 'Avg Win', value: `+${algo.metrics.avgWin}%` },
+                { label: 'Avg Loss', value: `${algo.metrics.avgLoss}%` },
+                { label: 'Avg R-Multiple', value: algo.metrics.avgRMultiple },
+                { label: 'Avg Duration', value: algo.metrics.avgTradeDuration },
+                { label: 'Trades/Day', value: algo.metrics.tradesPerDay.toFixed(1) },
+                { label: 'Trades/Month', value: algo.metrics.tradesPerMonth.toFixed(1) },
+                { label: 'Cost/Trade', value: `$${algo.metrics.costPerTrade.toFixed(2)}` },
+                { label: 'Max Consecutive Losses', value: algo.metrics.maxConsecutiveLosses },
+              ].map((m, i) => (
+                <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                  <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                  <p className="metric text-xl text-primary">{m.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
+        )}
 
-          <h2 className="text-xl font-light text-primary mb-6">Statistical Metrics</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-base-theme mb-8">
-            {[
-              { label: 'Skewness', value: algo.metrics.skewness },
-              { label: 'Kurtosis', value: algo.metrics.kurtosis },
-              { label: 'Largest Win', value: `+${algo.metrics.largestWin}%` },
-              { label: 'Largest Loss', value: `${algo.metrics.largestLoss}%` },
-              { label: 'Consecutive Wins', value: algo.metrics.consecutiveWins },
-              { label: 'Consecutive Losses', value: algo.metrics.consecutiveLosses },
-              { label: 'Avg Holding Period', value: algo.metrics.avgHoldingPeriod },
-              { label: 'Observation Period', value: algo.metrics.observationPeriod },
-            ].map((m, i) => (
-              <div key={i} className="p-6 bg-base-theme">
-                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
-                <p className="metric text-2xl text-primary">{m.value}</p>
-              </div>
-            ))}
+        {activeTab === 'risk' && (
+          <div className="glass rounded-2xl p-8">
+            <h3 className="text-xl font-semibold text-primary mb-6">Risk Analysis</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: 'Max Drawdown', value: `-${algo.metrics.maxDrawdown}%` },
+                { label: 'Current Drawdown', value: `-${algo.metrics.currentDrawdown}%` },
+                { label: 'Avg Drawdown', value: `-${algo.metrics.avgDrawdown}%` },
+                { label: 'Max DD Duration', value: `${algo.metrics.maxDrawdownDuration} days` },
+                { label: 'Recovery Time', value: `${algo.metrics.recoveryTime} days` },
+                { label: 'Volatility', value: `${algo.metrics.volatility}%` },
+                { label: 'VaR (95%)', value: `${algo.metrics.var95}%` },
+                { label: 'CVaR (95%)', value: `${algo.metrics.cvar95}%` },
+                { label: 'Worst Day', value: `${algo.metrics.worstDay}%` },
+                { label: 'Worst Week', value: `${algo.metrics.worstWeek}%` },
+                { label: 'Worst Month', value: `${algo.metrics.worstMonth}%` },
+                { label: 'Risk of Ruin', value: `${(algo.metrics.riskOfRuin * 100).toFixed(2)}%` },
+              ].map((m, i) => (
+                <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                  <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                  <p className="metric text-xl text-primary">{m.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
+        )}
 
-          <h2 className="text-xl font-light text-primary mb-6">Costs & Execution</h2>
-          <div className="grid md:grid-cols-2 gap-px bg-base-theme">
-            {[
-              { label: 'Commission', value: `${algo.metrics.commissionPct}%` },
-              { label: 'Slippage', value: `${algo.metrics.slippagePct}%` },
-            ].map((m, i) => (
-              <div key={i} className="p-6 bg-base-theme">
-                <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
-                <p className="metric text-2xl text-primary">{m.value}</p>
-              </div>
-            ))}
+        {activeTab === 'robustness' && (
+          <div className="glass rounded-2xl p-8">
+            <h3 className="text-xl font-semibold text-primary mb-6">Robustness & Statistical Reliability</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { label: 'In-Sample Return', value: `+${algo.metrics.inSampleReturn}%` },
+                { label: 'Out-of-Sample Return', value: `+${algo.metrics.outOfSampleReturn}%` },
+                { label: 'Walk-Forward Return', value: `+${algo.metrics.walkForwardReturn}%` },
+                { label: 'Monte Carlo (P50)', value: `+${algo.metrics.monteCarloP50}%` },
+                { label: 'Monte Carlo (P5)', value: `+${algo.metrics.monteCarloP5}%` },
+                { label: 'Parameter Sensitivity', value: algo.metrics.parameterSensitivity.toFixed(2) },
+                { label: 'Top 10 Trades Contribution', value: `${algo.metrics.top10TradesContribution}%` },
+                { label: 'Independent Observations', value: algo.metrics.independentObservations },
+                { label: 'Overfitting Risk', value: algo.metrics.overfittingRisk.toUpperCase() },
+              ].map((m, i) => (
+                <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                  <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                  <p className="metric text-xl text-primary">{m.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </FadeIn>
+        )}
 
-      <FadeIn delay={0.4}>
-        <div className="p-8 lg:p-12 border border-base-theme bg-base-theme mb-12">
-          <h2 className="text-xl font-light text-primary mb-6">Signal Logic</h2>
-          <p className="text-[15px] font-light leading-relaxed text-secondary">
-            {algo.signalLogic}
-          </p>
-        </div>
-      </FadeIn>
+        {activeTab === 'technical' && (
+          <div className="space-y-8">
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Market Behavior</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { label: 'Trend Performance', value: `${algo.metrics.trendPerformance > 0 ? '+' : ''}${algo.metrics.trendPerformance}%` },
+                  { label: 'Flat Performance', value: `${algo.metrics.flatPerformance > 0 ? '+' : ''}${algo.metrics.flatPerformance}%` },
+                  { label: 'High Vol Performance', value: `${algo.metrics.highVolPerformance > 0 ? '+' : ''}${algo.metrics.highVolPerformance}%` },
+                  { label: 'Long Win Rate', value: `${algo.metrics.longWinRate}%` },
+                  { label: 'Short Win Rate', value: `${algo.metrics.shortWinRate}%` },
+                  { label: 'Avg Exposure', value: `${algo.metrics.avgExposure}%` },
+                  { label: 'Avg Time in Position', value: algo.metrics.avgTimeInPosition },
+                  { label: 'Best Session', value: algo.metrics.bestSession },
+                ].map((m, i) => (
+                  <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                    <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                    <p className="metric text-xl text-primary">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-      <FadeIn delay={0.5}>
-        <div className="p-8 lg:p-12 border border-base-theme bg-base-theme mb-12">
-          <h2 className="text-xl font-light text-primary mb-6">Limitations</h2>
-          <ul className="space-y-3">
-            {algo.limitations.map((lim, i) => (
-              <li key={i} className="flex items-start gap-3 text-[14px] text-secondary">
-                <span className="w-1 h-1 rounded-full bg-subtle mt-2 shrink-0" />
-                {lim}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </FadeIn>
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Capital Efficiency</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { label: 'Recommended Capital', value: `$${algo.metrics.recommendedCapital.toLocaleString()}` },
+                  { label: 'Max Position Size', value: algo.metrics.maxPositionSize },
+                  { label: 'Leverage', value: `${algo.metrics.leverage}x` },
+                  { label: 'Margin Requirement', value: `$${algo.metrics.marginRequirement.toLocaleString()}` },
+                  { label: 'Return on Capital', value: `${algo.metrics.returnOnCapital}%` },
+                  { label: 'Return on Margin', value: `${algo.metrics.returnOnMargin}%` },
+                  { label: 'Turnover', value: algo.metrics.turnover.toFixed(1) },
+                  { label: 'Strategy Capacity', value: algo.metrics.strategyCapacity },
+                ].map((m, i) => (
+                  <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                    <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                    <p className="metric text-xl text-primary">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
 
+            <div className="glass rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-primary mb-6">Operational Reliability</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { label: 'System Uptime', value: `${algo.metrics.systemUptime}%` },
+                  { label: 'Execution Errors', value: `${algo.metrics.executionErrors}%` },
+                  { label: 'Signal Delay', value: `${algo.metrics.signalDelay} ms` },
+                  { label: 'Missed Trades', value: algo.metrics.missedTrades },
+                  { label: 'Model vs Actual Slippage', value: `${algo.metrics.modelVsActualSlippage}%` },
+                  { label: 'Broker Stability', value: `${algo.metrics.brokerStability}%` },
+                ].map((m, i) => (
+                  <div key={i} className="p-4 rounded-xl bg-surface-theme">
+                    <p className="text-[10px] uppercase tracking-wider text-muted mb-2">{m.label}</p>
+                    <p className="metric text-xl text-primary">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Pricing */}
       <FadeIn delay={0.6}>
-        <div className="p-8 lg:p-12 border border-accent/20 bg-accent/5">
-          <h2 className="text-xl font-light text-primary mb-6">Pricing</h2>
+        <div className="gradient-border p-12 mt-12 text-center">
+          <h2 className="text-3xl font-bold text-primary mb-6">Ready to start trading?</h2>
           {'monthly' in algo.pricing ? (
-            <div className="grid sm:grid-cols-2 gap-8 mb-8">
+            <div className="flex justify-center gap-8 mb-8">
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Monthly</p>
                 <p className="metric text-4xl text-primary">${algo.pricing.monthly}</p>
