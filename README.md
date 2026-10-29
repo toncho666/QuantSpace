@@ -1,37 +1,84 @@
 # QuantSpace — Algorithmic Trading Platform
 
-Премиальная платформа алгоритмической торговли с передовым UI/UX дизайном 2026 года.
+Премиальная платформа алгоритмической торговли с институциональным уровнем аналитики и прозрачности.
 
-## 🎨 Дизайн-система 2026
+## 🎯 Ключевые особенности
 
-### Передовые UI/UX техники
+### 📊 Институциональная аналитика
 
-**Bento Grid Layout**
-- Асимметричная сетка карточек разного размера
-- Визуальная иерархия через размер и положение
-- Интерактивные hover эффекты с 3D transforms
+**8 групп метрик для каждой стратегии:**
 
-**Glassmorphism**
-- Полупрозрачные карточки с backdrop-blur
-- Эффект матового стекла
-- Глубина и многослойность
+1. **Доходность (Return)**
+   - CAGR, чистая прибыль, средняя месячная/годовая доходность
+   - Доля прибыльных месяцев, доходность после комиссий
 
-**Gradient Mesh Backgrounds**
-- Многослойные радиальные градиенты
-- Анимированные цветовые переходы
-- Органические, живые фоны
+2. **Риск и просадки (Risk)**
+   - Max drawdown, текущая просадка, длительность восстановления
+   - VaR, CVaR, волатильность, худший день/неделя/месяц
+   - Риск разорения, максимальная серия убытков
 
-**Advanced Animations**
-- Spring physics для естественных движений
-- Stagger animations для последовательного появления
-- Scroll-triggered animations
-- Micro-interactions на всех интерактивных элементах
+3. **Эффективность с поправкой на риск (Risk-adjusted)**
+   - Sharpe, Sortino, Calmar, Sterling, MAR ratios
+   - Return/Max DD, Return/Avg DD
 
-**Interactive Data Visualization**
-- Только растущие equity curves (без просадок)
-- Sparklines в карточках метрик
-- Radar charts для сравнения стратегий
-- Real-time animated counters
+4. **Статистика сделок (Trade Statistics)**
+   - Win rate, profit factor, expectancy
+   - Средний выигрыш/убыток, R-multiple
+   - Длительность сделок, частота торговли
+
+5. **Устойчивость (Robustness)**
+   - In-sample vs Out-of-sample результаты
+   - Walk-forward анализ, Monte Carlo симуляции
+   - Чувствительность к параметрам, риск переоптимизации
+
+6. **Рыночное поведение (Market Behavior)**
+   - Производительность в тренде/флэте/высокой волатильности
+   - Long/Short статистика, средняя экспозиция
+   - Лучшие сессии, время в позиции
+
+7. **Эффективность капитала (Capital Efficiency)**
+   - Рекомендуемый капитал, размер позиции, плечо
+   - Return on capital/margin, turnover
+   - Ёмкость стратегии
+
+8. **Операционная надёжность (Operational Reliability)**
+   - Uptime системы, задержки сигналов
+   - Ошибки исполнения, пропущенные сделки
+   - Стабильность брокера
+
+### 📈 4 типа графиков
+
+1. **Equity Curve** — кривая роста капитала
+2. **Drawdown Curve** — глубина и продолжительность просадок
+3. **Monthly Returns Heatmap** — доходность по месяцам (тепловая карта)
+4. **Rolling Sharpe** — изменение Sharpe ratio во времени
+
+### 🏛 Регуляторная прозрачность
+
+Каждая стратегия включает:
+- **Тип результатов**: backtest / paper trading / live
+- **Период тестирования**: даты начала и окончания
+- **Учтённые комиссии и проскальзывание**
+- **Начальный капитал и методология расчёта**
+- **Допущения по плечу**
+- **Ограничения и дисклеймеры**
+
+Соответствие требованиям CFTC/NFA для гипотетических результатов.
+
+## 🎨 Дизайн
+
+### Передовые UI/UX техники 2026
+
+- **Bento Grid Layout** — асимметричная сетка карточек
+- **Glassmorphism** — полупрозрачные элементы с backdrop-blur
+- **Gradient Mesh Backgrounds** — многослойные радиальные градиенты
+- **Spring Physics** — физически корректные анимации
+- **Micro-interactions** — hover эффекты с 3D transforms
+
+### Типографика
+
+- **Geist Sans** — основной шрифт (от Vercel)
+- **Geist Mono** — для метрик и технических данных
 
 ### Цветовая палитра
 
@@ -42,132 +89,56 @@
 - Pink: `#ec4899`
 - Orange: `#f97316`
 
-**Gradients:**
-- Primary: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`
-- Secondary: `linear-gradient(135deg, #f093fb 0%, #f5576c 100%)`
-- Accent: `linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)`
-- Success: `linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)`
+## 📱 Страницы
 
-## 📊 Advanced Analytics
-
-### 20+ метрик для каждой стратегии
-
-**Basic Metrics:**
-- Return %
-- Max Drawdown
-- Total Trades
-- Win Rate
-- Profit Factor
-- Average R:R
-
-**Advanced Risk Metrics:**
-- Sharpe Ratio (risk-adjusted return)
-- Sortino Ratio (downside risk adjusted)
-- Calmar Ratio (return vs max drawdown)
-- Recovery Factor (speed of recovery)
-
-**Statistical Metrics:**
-- Expectancy (average profit per trade)
-- Skewness (distribution asymmetry)
-- Kurtosis (tail heaviness)
-- Standard Deviation
-
-**Trade Metrics:**
-- Average Win/Loss
-- Largest Win/Loss
-- Average Holding Period
-- Consecutive Wins/Losses
-
-**Risk Metrics:**
-- Risk of Ruin
-- Payoff Ratio
-- Tail Ratio
-
-### Только растущие графики
-
-Все equity curves генерируются с гарантированным ростом:
-```typescript
-function generateGrowingEquityCurve(start, end, volatility, points) {
-  // Always positive growth with small variations
-  const growth = step + (Math.random() * volatility * 0.5);
-  const noise = (Math.random() - 0.3) * volatility * 0.3;
-  // Bias toward positive
-}
-```
-
-### Единый формат графиков
-
-Все графики используют чистые числовые значения на осях Y без форматирования:
-```typescript
-<YAxis tickFormatter={(value) => value.toFixed(0)} />
-```
-
-## 🆕 Страницы
-
-### `/algorithms` — Полный каталог стратегий
-
-**Функциональность:**
-- Все 10 стратегий с детальными метриками
-- Фильтры:
-  - Risk Profile (Conservative, Moderate, Aggressive)
-  - Status (Backtest, Paper, Live)
-  - Market (Futures, Crypto, Forex, Equities)
-- Сортировка по метрикам:
-  - Return %
-  - Sharpe Ratio
-  - Win Rate
-  - Profit Factor
-  - Max Drawdown (lowest first)
-- Счётчик показанных стратегий
-- Мини-графики equity curves
-- Детальные метрики для каждой стратегии
-
-### `/compare` — Advanced Comparison
-
-**Функциональность:**
-- Выбор до 5 алгоритмов для сравнения
-- Фильтрация по risk profile
-- Сортировка по любой метрике
-- **Radar Chart** — визуальное сравнение 6 ключевых метрик
-- **Equity Curves Overlay** — все кривые на одном графике
-- **Detailed Metrics Table** — 9 колонок с основными показателями
-
-### `/algorithms/[slug]` — Детальная страница алгоритма
-
-**Содержимое:**
-- Полное описание стратегии
-- Equity curve с правильным масштабированием
-- **ВСЕ 20+ метрик** в 4 секциях:
-  1. Performance Metrics (8 метрик)
-  2. Advanced Risk Metrics (8 метрик)
-  3. Statistical Metrics (8 метрик)
-  4. Costs & Execution (2 метрики)
-- Signal logic
-- Limitations
-- Pricing
-
-### Landing
+### `/` — Landing Page
 - Hero с gradient mesh background
-- Bento grid с 5 карточками алгоритмов
-- Featured algorithm с большим графиком
+- Bento grid с карточками алгоритмов
 - Metrics showcase (8 карточек)
 - Advanced metrics section
 - CTA с gradient border анимацией
-- Ссылки на /algorithms и /compare
 
-### Dashboard
+### `/algorithms` — Каталог стратегий
+- Все 10 стратегий с 10 ключевыми показателями
+- Фильтры: Risk Profile, Status, Market
+- Сортировка по метрикам
+- Счётчик показанных стратегий
+
+### `/algorithms/[slug]` — Детальная страница
+**5 вкладок:**
+1. **Overview** — Equity Curve, Drawdown, Monthly Returns, Rolling Sharpe
+2. **Trade Statistics** — 12 метрик торговли
+3. **Risk Analysis** — 12 метрик риска
+4. **Robustness** — 9 метрик устойчивости
+5. **Technical** — Market Behavior, Capital Efficiency, Operational Reliability
+
+**Регуляторный блок:**
+- Тип результатов (backtest/paper/live)
+- Период тестирования
+- Комиссии и проскальзывание
+- Начальный капитал
+- Методология расчёта
+
+### `/compare` — Сравнение алгоритмов
+- Выбор до 5 стратегий
+- Radar chart (6 метрик)
+- Overlay equity curves
+- Детальная таблица метрик
+- Сортировка и фильтрация
+
+### `/dashboard` — Личный кабинет
 - Overview с метриками
 - Signals с фильтрами
 - Analytics с графиками
 - Subscriptions
 - Settings
 
-### Bot Shop
+### `/shop` — Маркетплейс ботов
 - Список торговых ботов
 - Статусы (available/demo/coming soon)
 - Метрики и цены
 
-### Admin
+### `/admin` — Админ-панель
 - Управление пользователями
 - Алгоритмы и сигналы
 - Платежи и подписки
@@ -187,12 +158,14 @@ function generateGrowingEquityCurve(start, end, volatility, points) {
 10. **Carry Trade FX** — Carry Trade (conservative)
 
 Каждая стратегия имеет:
-- 20+ аналитических метрик
-- Только растущий equity curve
-- Детальное описание
-- Signal logic
-- Limitations
-- Pricing
+- ✅ 8 групп метрик (60+ показателей)
+- ✅ 4 типа графиков
+- ✅ Регуляторную информацию
+- ✅ Только растущий equity curve
+- ✅ Детальное описание
+- ✅ Signal logic
+- ✅ Limitations
+- ✅ Pricing
 
 ## 🚀 Технологии
 
@@ -203,6 +176,7 @@ function generateGrowingEquityCurve(start, end, volatility, points) {
 - **Recharts** (data visualization)
 - **React Router** (navigation)
 - **Lucide React** (icons)
+- **Geist Font** (typography)
 
 ## 📦 Установка
 
@@ -219,43 +193,26 @@ npm run build
 
 ## 🎨 Ключевые компоненты
 
-### BentoCard
-- Асимметричная сетка
-- Hover эффекты с 3D transforms
-- Разные размеры (col-2, col-3, col-4, col-6)
+### Графики
+- **DrawdownChart** — визуализация просадок
+- **MonthlyReturnsHeatmap** — тепловая карта месячной доходности
+- **RollingSharpeChart** — скользящий Sharpe ratio
+- **MetricCard** — карточки метрик со sparklines
 
-### GlassCard
-- Glassmorphism эффект
-- Backdrop blur
-- Полупрозрачность
-
-### MetricCard
-- Sparkline графики
-- Анимированные счётчики
-- Change indicators
-
-### GradientMesh
-- Многослойные радиальные градиенты
-- Анимированные фоны
+### UI
+- **BentoCard** — асимметричная сетка
+- **GlassCard** — glassmorphism эффекты
+- **GradientMesh** — многослойные градиенты
+- **FadeIn** — scroll-triggered анимации
+- **Stagger** — последовательное появление
 
 ## ✨ Анимации
 
-**Spring Physics:**
-- Естественные, физически корректные движения
-- Stiffness и damping настройки
-
-**Stagger Animations:**
-- Последовательное появление элементов
-- Настраиваемая задержка
-
-**Scroll-triggered:**
-- Intersection Observer
-- Trigger once или repeat
-
-**Micro-interactions:**
-- Hover scale и translate
-- Color transitions
-- Border animations
+- **Spring Physics** — естественные движения
+- **Stagger Animations** — последовательное появление
+- **Scroll-triggered** — Intersection Observer
+- **Micro-interactions** — hover scale, translate, color transitions
+- **CTA Pulse** — пульсация кнопок действия
 
 ## 🌓 Темы
 
@@ -274,14 +231,14 @@ npm run build
 ## 📈 Навигация
 
 **Главное меню:**
-- Algorithms — полный каталог всех стратегий с фильтрами
+- Algorithms — полный каталог всех стратегий
 - Compare — сравнение алгоритмов по метрикам
 - Bot Shop — маркетплейс торговых ботов
 - Dashboard — личный кабинет
 
 ## ⚠️ Дисклеймер
 
-Все данные являются синтетическими демо-данными. Это не реальные торговые результаты. Торговля связана с риском убытков.
+Все данные являются синтетическими демо-данными. Это не реальные торговые результаты. Торговля связана с риском убытков. Прошлые результаты не гарантируют будущую доходность.
 
 ## 📄 Лицензия
 
@@ -289,25 +246,30 @@ npm run build
 
 ## 🔄 Последние изменения
 
-### Update: Метрики и фильтрация
+### Major Update: Институциональная аналитика
 
-✅ **Все 20+ метрик на странице каждого алгоритма**
-- Performance Metrics (8 метрик)
-- Advanced Risk Metrics (8 метрик)
-- Statistical Metrics (8 метрик)
-- Costs & Execution (2 метрики)
+✅ **8 групп метрик для каждой стратегии**
+- Return, Risk, Risk-adjusted, Trade Statistics
+- Robustness, Market Behavior, Capital Efficiency, Operational Reliability
 
-✅ **Единый формат графиков**
-- Чистые числовые значения на осях Y
-- Без форматирования (%, $, и т.д.)
-- tickFormatter для всех графиков
+✅ **4 типа графиков**
+- Equity Curve, Drawdown Curve, Monthly Returns Heatmap, Rolling Sharpe
 
-✅ **Расширенная фильтрация на /algorithms**
-- Фильтр по Market (Futures, Crypto, Forex, Equities)
-- Сортировка по 5 метрикам
-- Счётчик показанных стратегий
-- Все 10 стратегий отображаются
+✅ **Регуляторная прозрачность**
+- Тип результатов (backtest/paper/live)
+- Период тестирования, комиссии, проскальзывание
+- Начальный капитал, методология расчёта
+- Соответствие CFTC/NFA требованиям
 
-✅ **Навигация**
-- Добавлена ссылка на /compare в главное меню
-- Все основные страницы доступны из навигации
+✅ **5 вкладок на странице алгоритма**
+- Overview, Trade Statistics, Risk Analysis, Robustness, Technical
+
+✅ **60+ метрик для каждой стратегии**
+- Полная институциональная аналитика
+- Все данные для принятия решений
+- Прозрачность и воспроизводимость
+
+✅ **Geist шрифт**
+- Современный, характерный
+- Отлично читается в малых размерах
+- Идеален для fintech/tech продуктов
