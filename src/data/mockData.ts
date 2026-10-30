@@ -335,3 +335,149 @@ export const algorithms: Algorithm[] = [
     },
   },
 ];
+
+// Bot interface
+export interface Bot {
+  id: string;
+  name: string;
+  version: string;
+  description: string;
+  category: string;
+  exchanges: string[];
+  instruments: string[];
+  timeframes: string[];
+  minCapital: number;
+  maxDrawdown: number;
+  returnPct: number;
+  price: number;
+  licenseType: 'subscription' | 'lifetime' | 'signals';
+  status: 'available' | 'coming_soon' | 'demo';
+}
+
+// Signal interface
+export interface Signal {
+  id: string;
+  algorithmId: string;
+  algorithmName: string;
+  instrument: string;
+  timeframe: string;
+  direction: 'LONG' | 'SHORT';
+  entryPrice: number;
+  stopLoss: number;
+  takeProfit: number[];
+  riskReward: number;
+  createdAt: string;
+  expiresAt: string;
+  status: 'NEW' | 'ACTIVE' | 'TRIGGERED' | 'FILLED' | 'CLOSED' | 'CANCELLED' | 'EXPIRED';
+  result?: number;
+}
+
+// Subscription Plan interface
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  price: number;
+  period: 'monthly' | 'annual';
+  features: string[];
+  algorithms: string[];
+  highlighted?: boolean;
+}
+
+// Bots data
+export const bots: Bot[] = [
+  {
+    id: 'bot-001',
+    name: 'VP AutoTrader',
+    version: '2.1.0',
+    description: 'Automated execution of VP Mean Reversion signals.',
+    category: 'Mean Reversion',
+    exchanges: ['Binance Futures', 'Bybit'],
+    instruments: ['Crypto Perpetuals', 'ES'],
+    timeframes: ['15m', '1H'],
+    minCapital: 5000,
+    maxDrawdown: 8.2,
+    returnPct: 23.4,
+    price: 99,
+    licenseType: 'subscription',
+    status: 'demo',
+  },
+  {
+    id: 'bot-002',
+    name: 'Trend Rider',
+    version: '1.4.2',
+    description: 'Automated trend-following execution with dynamic position sizing.',
+    category: 'Trend Following',
+    exchanges: ['Binance', 'Bybit', 'OKX'],
+    instruments: ['BTC/USDT', 'ETH/USDT'],
+    timeframes: ['1H', '4H', '1D'],
+    minCapital: 10000,
+    maxDrawdown: 12.1,
+    returnPct: 34.7,
+    price: 149,
+    licenseType: 'subscription',
+    status: 'coming_soon',
+  },
+];
+
+// Signals data
+export const signals: Signal[] = [
+  {
+    id: 'sig-001',
+    algorithmId: 'algo-001',
+    algorithmName: 'VP Mean Reversion',
+    instrument: 'ES',
+    timeframe: '1H',
+    direction: 'LONG',
+    entryPrice: 4892.5,
+    stopLoss: 4878.0,
+    takeProfit: [4910.0, 4925.0, 4940.0],
+    riskReward: 2.3,
+    createdAt: '2026-01-20T14:30:00Z',
+    expiresAt: '2026-01-20T20:00:00Z',
+    status: 'ACTIVE',
+  },
+  {
+    id: 'sig-002',
+    algorithmId: 'algo-002',
+    algorithmName: 'Trend Continuation',
+    instrument: 'BTC/USDT',
+    timeframe: '4H',
+    direction: 'LONG',
+    entryPrice: 42150,
+    stopLoss: 41200,
+    takeProfit: [44000, 45500],
+    riskReward: 3.1,
+    createdAt: '2026-01-20T08:00:00Z',
+    expiresAt: '2026-01-22T08:00:00Z',
+    status: 'TRIGGERED',
+  },
+];
+
+// Subscription plans
+export const subscriptionPlans: SubscriptionPlan[] = [
+  {
+    id: 'plan-starter',
+    name: 'Starter',
+    price: 49,
+    period: 'monthly',
+    features: ['1 algorithm access', 'Daily signal delivery', 'Basic analytics'],
+    algorithms: ['algo-001'],
+  },
+  {
+    id: 'plan-pro',
+    name: 'Professional',
+    price: 149,
+    period: 'monthly',
+    features: ['3 algorithm access', 'Real-time signals', 'Advanced analytics', 'API access'],
+    algorithms: ['algo-001', 'algo-002'],
+    highlighted: true,
+  },
+  {
+    id: 'plan-institutional',
+    name: 'Institutional',
+    price: 399,
+    period: 'monthly',
+    features: ['All algorithms', 'Full API access', 'Dedicated support'],
+    algorithms: ['algo-001', 'algo-002'],
+  },
+];
