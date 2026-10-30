@@ -94,6 +94,65 @@ export function Layout() {
       <main className="pt-16">
         <Outlet />
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-base-theme mt-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div>
+              <div className="mb-4">
+                <span className="text-[15px] font-medium tracking-tight text-primary">
+                  Quant<span className="text-accent-purple">Space</span>
+                </span>
+              </div>
+              <p className="text-[13px] text-muted leading-relaxed">
+                Professional algorithmic trading platform with institutional-grade analytics.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Platform</h4>
+              <ul className="space-y-3">
+                <li><Link to="/algorithms" className="text-[13px] text-secondary hover:text-primary transition-colors">Algorithms</Link></li>
+                <li><Link to="/compare" className="text-[13px] text-secondary hover:text-primary transition-colors">Compare</Link></li>
+                <li><Link to="/shop" className="text-[13px] text-secondary hover:text-primary transition-colors">Bot Shop</Link></li>
+                <li><Link to="/dashboard" className="text-[13px] text-secondary hover:text-primary transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Resources</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Documentation</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">API Reference</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Trading Guide</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Support</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Legal</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Risk Disclosure</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Cookie Policy</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-base-theme">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <p className="text-[12px] text-muted">
+                © 2026 QuantSpace. All rights reserved.
+              </p>
+              <p className="text-[11px] text-muted max-w-2xl text-right">
+                <strong>Risk Disclosure:</strong> Trading financial instruments involves substantial risk of loss. Past performance does not guarantee future results. All data shown is synthetic demo data for illustration purposes only.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -60,7 +60,7 @@ export function Landing() {
               className="lg:col-span-5"
             >
               <div className="grid grid-cols-2 gap-4">
-                {algorithms.slice(0, 6).map((algo, i) => (
+                {algorithms.slice(0, 10).map((algo, i) => (
                   <motion.div
                     key={algo.id}
                     initial={{ opacity: 0, y: 20 }}
