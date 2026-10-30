@@ -2,38 +2,112 @@
 
 Премиальная платформа алгоритмической торговли с институциональным уровнем аналитики.
 
-## ✅ Полная структура продукта
+## ✅ Полная структура продукта восстановлена
 
-### 📱 Все страницы восстановлены
+### 📊 10 алгоритмов с полными метриками
 
-**Публичные страницы:**
-- `/` — **Landing** — главная страница с hero-секцией и ключевыми метриками
-- `/algorithms` — **Algorithms** — каталог всех стратегий с фильтрами
-- `/algorithms/:slug` — **AlgorithmDetail** — детальная страница алгоритма с 5 вкладками
-- `/compare` — **Compare** — сравнение алгоритмов по метрикам
-- `/shop` — **Shop** — маркетплейс торговых ботов
+Все 10 стратегий с 60+ метриками каждая:
 
-**Авторизация:**
+1. **VP Mean Reversion** — Mean Reversion (moderate, paper)
+   - CAGR: 18.7%, Sharpe: 1.62, Max DD: -8.2%
+   
+2. **Trend Continuation** — Trend Following (moderate, paper)
+   - CAGR: 28.1%, Sharpe: 1.89, Max DD: -12.1%
+   
+3. **Breakout Value Shift** — Breakout (aggressive, backtest)
+   - CAGR: 34.8%, Sharpe: 1.45, Max DD: -15.8%
+   
+4. **Delta Divergence Scalp** — Scalping (aggressive, backtest)
+   - CAGR: 15.2%, Sharpe: 2.10, Max DD: -6.4%
+   
+5. **Statistical Arbitrage** — Statistical Arbitrage (conservative, paper)
+   - CAGR: 12.8%, Sharpe: 2.34, Max DD: -4.2%
+   
+6. **Volatility Breakout** — Volatility (moderate, paper)
+   - CAGR: 22.8%, Sharpe: 1.78, Max DD: -9.8%
+   
+7. **Grid Market Making** — Market Making (conservative, backtest)
+   - CAGR: 17.8%, Sharpe: 2.67, Max DD: -5.6%
+   
+8. **Momentum Trend** — Trend Following (moderate, live)
+   - CAGR: 31.2%, Sharpe: 1.62, Max DD: -14.2%
+   
+9. **RSI Mean Reversion** — Mean Reversion (moderate, paper)
+   - CAGR: 15.6%, Sharpe: 1.89, Max DD: -7.3%
+   
+10. **Carry Trade FX** — Carry Trade (conservative, live)
+    - CAGR: 10.2%, Sharpe: 1.45, Max DD: -6.1%
+
+### 🤖 5 торговых ботов
+
+1. **VP AutoTrader** — Mean Reversion (demo, $99/mo)
+2. **Trend Rider** — Trend Following (coming_soon, $149/mo)
+3. **Breakout Executor** — Breakout (coming_soon, $2499 license)
+4. **Scalp Master** — Scalping (demo, $199/mo)
+5. **Stat Arb Pro** — Statistical Arbitrage (available, $299/mo)
+
+### 📡 5 торговых сигналов
+
+- VP Mean Reversion: ES LONG (ACTIVE)
+- Trend Continuation: BTC/USDT LONG (TRIGGERED)
+- Breakout Value Shift: NQ SHORT (CLOSED, +1.8%)
+- Statistical Arbitrage: BTC/ETH LONG (ACTIVE)
+- Momentum Trend: EUR/USD LONG (TRIGGERED)
+
+### 💳 3 плана подписки
+
+1. **Starter** — $49/mo (1 алгоритм)
+2. **Professional** — $149/mo (3 алгоритма, highlighted)
+3. **Institutional** — $399/mo (все алгоритмы)
+
+## 📱 Все страницы на месте
+
+### Публичные страницы:
+- `/` — **Landing** — главная с 6 карточками алгоритмов
+- `/algorithms` — **Algorithms** — каталог с расширенной фильтрацией
+- `/algorithms/:slug` — **AlgorithmDetail** — детальная страница (5 вкладок)
+- `/compare` — **Compare** — сравнение 3 алгоритмов по умолчанию
+- `/shop` — **Shop** — маркетплейс 5 ботов
+
+### Авторизация:
 - `/login` — **Login** — страница входа
 - `/register` — **Register** — страница регистрации
 
-**Личный кабинет:**
-- `/dashboard` — **Dashboard** — личный кабинет с 5 вкладками:
-  - Overview — обзор с метриками и последними сигналами
+### Личный кабинет:
+- `/dashboard` — **Dashboard** с 5 вкладками:
+  - Overview — обзор с метриками и сигналами
   - Signals — список торговых сигналов
   - Analytics — аналитика производительности
   - Subscriptions — управление подписками
   - Settings — настройки профиля
 
-**Администрирование:**
-- `/admin` — **Admin** — административная панель с 7 вкладками:
+### Администрирование:
+- `/admin` — **Admin** с 7 вкладками:
   - Overview — обзор системы
-  - Users — управление пользователями
+  - Users — управление пользователями (5 демо-пользователей)
   - Algorithms — управление алгоритмами
   - Signals — управление сигналами
   - Payments — управление платежами
   - Bots — управление ботами
   - System — мониторинг системы
+
+## 🔍 Расширенная фильтрация алгоритмов
+
+### Фильтры:
+- **Поиск** — по названию алгоритма
+- **Risk Profile** — Conservative, Moderate, Aggressive
+- **Status** — Backtest, Paper Trading, Live
+- **Market** — Futures, Crypto, Forex, Equities
+
+### Сортировка:
+- CAGR (годовая доходность)
+- Sharpe Ratio
+- Win Rate
+- Profit Factor
+- Lowest Max Drawdown
+
+### Счётчик результатов:
+- Показывает "Showing X of 10 strategies"
 
 ## 📊 8 групп метрик (60+ показателей)
 
@@ -127,7 +201,7 @@
 - **Metric** — моноширинный шрифт для чисел
 - **Label** — uppercase текст с tracking
 - **FadeIn** — анимация появления при скролле
-- **Stagger** — последовательное появление элементов
+- **Stagger** — последовательная анимация элементов
 
 ## 📊 Форматирование чисел
 
@@ -200,21 +274,25 @@ src/
 │   └── Stagger.tsx           # Последовательная анимация
 │
 ├── pages/
-│   ├── Landing.tsx           # Главная страница
-│   ├── Algorithms.tsx        # Каталог алгоритмов
-│   ├── AlgorithmDetail.tsx   # Детальная страница алгоритма
-│   ├── Compare.tsx           # Сравнение алгоритмов
+│   ├── Landing.tsx           # Главная страница (6 карточек)
+│   ├── Algorithms.tsx        # Каталог (10 алгоритмов, фильтрация)
+│   ├── AlgorithmDetail.tsx   # Детальная страница (5 вкладок)
+│   ├── Compare.tsx           # Сравнение (3 по умолчанию)
 │   ├── Login.tsx             # Страница входа
 │   ├── Register.tsx          # Страница регистрации
-│   ├── Dashboard.tsx         # Личный кабинет
-│   ├── Shop.tsx              # Маркетплейс ботов
-│   └── Admin.tsx             # Административная панель
+│   ├── Dashboard.tsx         # Личный кабинет (5 вкладок)
+│   ├── Shop.tsx              # Маркетплейс (5 ботов)
+│   └── Admin.tsx             # Админ-панель (7 вкладок)
 │
 ├── data/
-│   └── mockData.ts           # Моковые данные (алгоритмы, боты, сигналы)
+│   └── mockData.ts           # Моковые данные
+│       ├── algorithms (10)
+│       ├── bots (5)
+│       ├── signals (5)
+│       └── subscriptionPlans (3)
 │
 └── utils/
-    └── format.ts             # Утилиты форматирования чисел
+    └── format.ts             # Утилиты форматирования
 ```
 
 ## 🎯 Навигация
@@ -229,19 +307,44 @@ src/
 - Login / Register — авторизация
 - Admin — административная панель
 
-## ✅ Проверка форматирования
+## ✅ Восстановленный контент
 
-Все числовые значения проходят через утилиты форматирования:
+### По сравнению с версией 2 дня назад:
 
-```typescript
-import { formatPercent, formatMoney, formatNumber, formatRatio } from '../utils/format';
+✅ **10 алгоритмов** (было 2)
+- Все с полными 60+ метриками
+- Разные классы стратегий
+- Разные risk profiles
+- Разные статусы (backtest/paper/live)
 
-// Примеры использования
-<p>{formatPercent(algo.metrics.cagr, 1)}</p>           // "18.7%"
-<p>{formatMoney(algo.metrics.netProfit, 0)}</p>        // "$23.4k"
-<p>{formatNumber(algo.metrics.totalTrades, 0)}</p>     // "142"
-<p>{formatRatio(algo.metrics.sharpeRatio, 2)}</p>      // "1.62"
-```
+✅ **Расширенная фильтрация**
+- Поиск по названию
+- Фильтр по risk profile
+- Фильтр по status
+- Фильтр по market
+- Сортировка по 5 метрикам
+- Счётчик результатов
+
+✅ **5 ботов** (было 2)
+- Разные категории
+- Разные статусы
+- Разные цены
+
+✅ **5 сигналов** (было 2)
+- Разные алгоритмы
+- Разные статусы
+- Разные инструменты
+
+✅ **6 карточек на Landing** (было 4)
+- Больше контента на главной
+
+✅ **3 алгоритма в Compare** (было 2)
+- Больше данных для сравнения
+
+✅ **Все страницы на месте**
+- Dashboard с 5 вкладками
+- Shop с 5 ботами
+- Admin с 7 вкладками
 
 ## 📄 Лицензия
 
@@ -249,34 +352,31 @@ import { formatPercent, formatMoney, formatNumber, formatRatio } from '../utils/
 
 ## 🔄 Последние изменения
 
-### Восстановление всех страниц
+### Восстановление полного контента
 
-✅ **Все страницы на месте:**
-- Landing, Algorithms, AlgorithmDetail, Compare
-- Login, Register
-- Dashboard (5 вкладок)
-- Shop (маркетплейс ботов)
-- Admin (7 вкладок)
+✅ **10 алгоритмов с полными метриками**
+- VP Mean Reversion, Trend Continuation, Breakout Value Shift
+- Delta Divergence Scalp, Statistical Arbitrage, Volatility Breakout
+- Grid Market Making, Momentum Trend, RSI Mean Reversion, Carry Trade FX
 
-✅ **Все компоненты созданы:**
-- Layout с навигацией
-- Toast для уведомлений
-- FadeIn и Stagger для анимаций
+✅ **Расширенная фильтрация на /algorithms**
+- Поиск, Risk Profile, Status, Market
+- Сортировка по CAGR, Sharpe, Win Rate, Profit Factor, Max DD
+- Счётчик "Showing X of 10 strategies"
 
-✅ **Все данные экспортированы:**
-- algorithms (2 алгоритма с полными метриками)
-- bots (2 бота)
-- signals (2 сигнала)
-- subscriptionPlans (3 плана)
+✅ **5 ботов на /shop**
+- VP AutoTrader, Trend Rider, Breakout Executor, Scalp Master, Stat Arb Pro
 
-✅ **Форматирование чисел:**
-- Все значения корректно отформатированы
-- Утилиты форматирования для всех типов данных
-- Правила округления соблюдены
+✅ **5 сигналов**
+- Разные алгоритмы, инструменты, статусы
 
-✅ **Навигация:**
-- Все страницы доступны из главного меню
-- Маршруты подключены в App.tsx
-- Мобильная навигация работает
+✅ **3 плана подписки**
+- Starter ($49), Professional ($149), Institutional ($399)
+
+✅ **6 карточек на Landing**
+- Больше контента на главной странице
+
+✅ **3 алгоритма в Compare по умолчанию**
+- Больше данных для сравнения
 
 Проект полностью восстановлен и готов к использованию!

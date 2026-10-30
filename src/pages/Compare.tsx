@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
 export function Compare() {
-  const [selected, setSelected] = useState<string[]>([algorithms[0].id, algorithms[1].id]);
+  const [selected, setSelected] = useState<string[]>([algorithms[0].id, algorithms[1].id, algorithms[7].id]);
 
   const toggleAlgo = (id: string) => {
     setSelected(prev => 
