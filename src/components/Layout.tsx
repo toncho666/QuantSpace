@@ -8,8 +8,6 @@ export function Layout() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isDashboard = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin');
-  const isAuth = location.pathname === '/login' || location.pathname === '/register';
 
   const navLinks = [
     { to: '/algorithms', label: 'Algorithms' },
@@ -20,167 +18,141 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-base-theme text-primary">
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-base-theme/80 backdrop-blur-xl">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2 group">
+            <Link to="/" className="flex items-center gap-2">
               <span className="text-[15px] font-medium tracking-tight text-primary">
-                Quant<span className="text-accent">Space</span>
+                Quant<span className="text-accent-purple">Space</span>
               </span>
             </Link>
 
-            {!isDashboard && !isAuth && (
-              <nav className="hidden md:flex items-center gap-10">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className={`text-[13px] font-normal tracking-wide transition-colors relative ${
-                      location.pathname === link.to
-                        ? 'text-primary'
-                        : 'text-muted hover:text-primary'
-                    }`}
-                  >
-                    {link.label}
-                    {location.pathname === link.to && (
-                      <motion.div
-                        layoutId="nav-indicator"
-                        className="absolute -bottom-[21px] left-0 right-0 h-[0.5px] bg-accent"
-                      />
-                    )}
-                  </Link>
-                ))}
-              </nav>
-            )}
+            <nav className="hidden md:flex items-center gap-10">
+              {navLinks.map(link => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`text-[13px] font-normal tracking-wide transition-colors relative ${
+                    location.pathname === link.to ? 'text-primary' : 'text-muted hover:text-primary'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-hover-theme transition-colors"
-                aria-label="Toggle theme"
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
 
-              {!isDashboard && !isAuth && (
-                <div className="hidden md:flex items-center gap-4">
-                  <Link
-                    to="/login"
-                    className="text-[13px] font-normal text-muted hover:text-primary transition-colors"
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="btn-gradient text-[13px] font-semibold px-5 py-2 rounded-full"
-                  >
-                    Get Started →
-                  </Link>
-                </div>
-              )}
+              <Link
+                to="/algorithms"
+                className="btn-gradient text-[13px] font-semibold px-5 py-2 rounded-full"
+              >
+                Get Started →
+              </Link>
 
-              {!isDashboard && !isAuth && (
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="md:hidden p-2"
-                  aria-label="Toggle menu"
-                >
-                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </button>
-              )}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
           </div>
         </div>
 
         <AnimatePresence>
-          {mobileMenuOpen && !isDashboard && !isAuth && (
+          {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="md:hidden border-t border-base-theme bg-base-theme overflow-hidden"
+              className="md:hidden border-t border-base-theme bg-base-theme"
             >
-              <div className="px-6 py-6 space-y-4">
-                {navLinks.map((link, i) => (
-                  <motion.div
+              <div className="px-6 py-4 space-y-3">
+                {navLinks.map(link => (
+                  <Link
                     key={link.to}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
+                    to={link.to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-[15px] text-primary py-2"
                   >
-                    <Link
-                      to={link.to}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block text-lg font-light py-2 text-primary"
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
+                    {link.label}
+                  </Link>
                 ))}
-                <div className="pt-4 flex gap-4">
-                  <Link to="/login" className="text-sm text-primary">Sign in</Link>
-                  <Link to="/register" className="btn-gradient text-sm font-semibold px-5 py-2 rounded-full">Get Started →</Link>
-                </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
 
-      <main className={isDashboard || isAuth ? '' : 'pt-16'}>
+      <main className="pt-16">
         <Outlet />
       </main>
 
-      {!isDashboard && !isAuth && (
-        <footer className="border-t border-base-theme">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-              <div className="col-span-2 md:col-span-1">
-                <p className="text-[15px] font-medium tracking-tight mb-3 text-primary">
-                  Quant<span className="text-accent">Space</span>
-                </p>
-                <p className="text-[13px] leading-relaxed text-muted">
-                  Systematic algorithmic trading with transparent results.
-                </p>
+      {/* Footer */}
+      <footer className="border-t border-base-theme mt-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div>
+              <div className="mb-4">
+                <span className="text-[15px] font-medium tracking-tight text-primary">
+                  Quant<span className="text-accent-purple">Space</span>
+                </span>
               </div>
-              <div>
-                <p className="label text-muted mb-4">Platform</p>
-                <div className="space-y-3">
-                  <Link to="/algorithms" className="block text-[13px] text-secondary hover:text-primary transition-colors">Algorithms</Link>
-                  <Link to="/shop" className="block text-[13px] text-secondary hover:text-primary transition-colors">Bot Shop</Link>
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">API</a>
-                </div>
-              </div>
-              <div>
-                <p className="label text-muted mb-4">Legal</p>
-                <div className="space-y-3">
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">Privacy</a>
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">Terms</a>
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">Risk Disclosure</a>
-                </div>
-              </div>
-              <div>
-                <p className="label text-muted mb-4">Contact</p>
-                <div className="space-y-3">
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">support@quantspace.io</a>
-                  <a href="#" className="block text-[13px] text-secondary hover:text-primary transition-colors">Documentation</a>
-                </div>
-              </div>
+              <p className="text-[13px] text-muted leading-relaxed">
+                Professional algorithmic trading platform with institutional-grade analytics.
+              </p>
             </div>
 
-            <div className="pt-8 border-t border-base-theme">
-              <p className="text-[11px] leading-relaxed max-w-3xl text-subtle">
-                <span className="font-medium">Risk Disclosure:</span> Trading financial instruments involves substantial risk of loss. Past performance is not indicative of future results. Algorithmic trading results shown are based on historical backtesting and paper trading. Actual results may differ significantly. You should only trade with capital you can afford to lose. QuantSpace provides tools and analysis — not financial advice.
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Platform</h4>
+              <ul className="space-y-3">
+                <li><Link to="/algorithms" className="text-[13px] text-secondary hover:text-primary transition-colors">Algorithms</Link></li>
+                <li><Link to="/compare" className="text-[13px] text-secondary hover:text-primary transition-colors">Compare</Link></li>
+                <li><Link to="/shop" className="text-[13px] text-secondary hover:text-primary transition-colors">Bot Shop</Link></li>
+                <li><Link to="/dashboard" className="text-[13px] text-secondary hover:text-primary transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Resources</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Documentation</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">API Reference</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Trading Guide</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Support</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] uppercase tracking-wider text-muted mb-4">Legal</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Risk Disclosure</a></li>
+                <li><a href="#" className="text-[13px] text-secondary hover:text-primary transition-colors">Cookie Policy</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-base-theme">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <p className="text-[12px] text-muted">
+                © 2026 QuantSpace. All rights reserved.
               </p>
-              <p className="text-[11px] mt-4 text-subtle">
-                © 2026 QuantSpace
+              <p className="text-[11px] text-muted max-w-2xl text-right">
+                <strong>Risk Disclosure:</strong> Trading financial instruments involves substantial risk of loss. Past performance does not guarantee future results. All data shown is synthetic demo data for illustration purposes only.
               </p>
             </div>
           </div>
-        </footer>
-      )}
+        </div>
+      </footer>
     </div>
   );
 }

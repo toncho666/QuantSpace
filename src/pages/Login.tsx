@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { useTheme } from '../App';
+import { BarChart3, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '../components/Toast';
 
 export function Login() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,9 +27,9 @@ export function Login() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-12">
-          <p className="text-[15px] font-medium tracking-tight mb-4 text-primary">
-            Quant<span className="text-accent">Space</span>
-          </p>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <BarChart3 className="w-8 h-8 text-accent-purple" />
+          </div>
           <h1 className="display-md text-4xl text-primary mb-3">Welcome back</h1>
           <p className="text-[14px] font-light text-secondary">
             Sign in to access your dashboard

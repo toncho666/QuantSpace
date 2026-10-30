@@ -1,11 +1,15 @@
+import { useTheme } from '../App';
 import { algorithms, signals, bots } from '../data/mockData';
 import { Users, BarChart3, Signal, CreditCard, Bot, AlertTriangle, Settings, Activity, Shield } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { formatPercent } from '../utils/format';
 
 type AdminTab = 'overview' | 'users' | 'algorithms' | 'signals' | 'subscriptions' | 'bots' | 'system';
 
 export function Admin() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
 
   const tabs: { id: AdminTab; label: string; icon: typeof Activity }[] = [
@@ -20,7 +24,8 @@ export function Admin() {
 
   return (
     <div className="flex min-h-screen pt-16">
-      <aside className="hidden lg:flex flex-col w-56 shrink-0 border-r border-base-theme bg-base-theme">
+      {/* Sidebar */}
+      <aside className={`hidden lg:flex flex-col w-56 shrink-0 border-r ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
         <div className="p-6">
           <div className="flex items-center gap-2 mb-6">
             <Shield className="w-4 h-4 text-loss" />
@@ -32,7 +37,9 @@ export function Admin() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-normal transition-colors ${
-                  activeTab === tab.id ? 'bg-hover-theme text-primary' : 'text-muted hover:text-primary hover:bg-hover-theme'
+                  activeTab === tab.id
+                    ? isDark ? 'bg-white/5 text-neutral-100' : 'bg-black/5 text-neutral-900'
+                    : isDark ? 'text-neutral-500 hover:text-neutral-200 hover:bg-white/[0.02]' : 'text-neutral-600 hover:text-neutral-900 hover:bg-black/[0.02]'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -43,8 +50,10 @@ export function Admin() {
         </div>
       </aside>
 
+      {/* Content */}
       <div className="flex-1 overflow-auto">
-        <div className={`lg:hidden flex overflow-x-auto border-b border-base-theme`}>
+        {/* Mobile tabs */}
+        <div className={`lg:hidden flex overflow-x-auto border-b ${isDark ? 'border-white/5' : 'border-black/5'}`}>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -60,25 +69,30 @@ export function Admin() {
         </div>
 
         <div className="p-6 lg:p-12">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-3 mb-8 flex items-center gap-3 border border-loss/20 bg-loss/5">
+          {/* Access Warning */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`p-3 mb-8 flex items-center gap-3 border ${isDark ? 'border-loss/20 bg-loss/5' : 'border-loss/20 bg-loss/5'}`}
+          >
             <AlertTriangle className="w-4 h-4 text-loss shrink-0" />
             <p className="text-[11px] text-loss">Admin access demo — requires role verification on backend.</p>
           </motion.div>
 
-          {activeTab === 'overview' && <AdminOverview />}
-          {activeTab === 'users' && <AdminUsers />}
-          {activeTab === 'algorithms' && <AdminAlgorithms />}
-          {activeTab === 'signals' && <AdminSignals />}
-          {activeTab === 'subscriptions' && <AdminSubscriptions />}
-          {activeTab === 'bots' && <AdminBots />}
-          {activeTab === 'system' && <AdminSystem />}
+          {activeTab === 'overview' && <AdminOverview isDark={isDark} />}
+          {activeTab === 'users' && <AdminUsers isDark={isDark} />}
+          {activeTab === 'algorithms' && <AdminAlgorithms isDark={isDark} />}
+          {activeTab === 'signals' && <AdminSignals isDark={isDark} />}
+          {activeTab === 'subscriptions' && <AdminSubscriptions isDark={isDark} />}
+          {activeTab === 'bots' && <AdminBots isDark={isDark} />}
+          {activeTab === 'system' && <AdminSystem isDark={isDark} />}
         </div>
       </div>
     </div>
   );
 }
 
-function AdminOverview() {
+function AdminOverview({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-12">
       <div>
@@ -86,14 +100,14 @@ function AdminOverview() {
         <h2 className="display-md text-4xl text-primary">Overview</h2>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-base-theme">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
         {[
           { label: 'Total Users', value: '1,247', change: '+12%' },
           { label: 'Active Subs', value: '342', change: '+8%' },
           { label: 'MRR', value: '$48,290', change: '+15%' },
           { label: 'Active Signals', value: '7' },
         ].map((stat, i) => (
-          <div key={i} className="p-6 bg-base-theme">
+          <div key={i} className={`p-6 ${isDark ? 'bg-base' : 'bg-light-base'}`}>
             <p className="text-[11px] uppercase tracking-wider text-muted mb-2">{stat.label}</p>
             <p className="metric text-3xl text-primary mb-1">{stat.value}</p>
             {'change' in stat && <p className="text-[11px] text-profit">{stat.change}</p>}
@@ -101,7 +115,7 @@ function AdminOverview() {
         ))}
       </div>
 
-      <div className="p-8 border border-base-theme bg-base-theme">
+      <div className={`p-8 border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
         <h3 className="text-lg font-light text-primary mb-6">System Health</h3>
         <div className="space-y-4">
           {[
@@ -125,7 +139,7 @@ function AdminOverview() {
   );
 }
 
-function AdminUsers() {
+function AdminUsers({ isDark }: { isDark: boolean }) {
   const demoUsers = [
     { id: 1, name: 'Alex Chen', email: 'alex@example.com', plan: 'Professional', status: 'active' },
     { id: 2, name: 'Maria Santos', email: 'maria@example.com', plan: 'Starter', status: 'active' },
@@ -141,11 +155,11 @@ function AdminUsers() {
         <h2 className="display-md text-4xl text-primary">Users</h2>
       </div>
 
-      <div className="border border-base-theme bg-base-theme">
+      <div className={`border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-base-theme">
+              <tr className={`border-b ${isDark ? 'border-white/5' : 'border-black/5'}`}>
                 <th className="text-left px-6 py-4 text-[10px] uppercase tracking-wider text-muted font-medium">User</th>
                 <th className="text-left px-6 py-4 text-[10px] uppercase tracking-wider text-muted font-medium">Plan</th>
                 <th className="text-left px-6 py-4 text-[10px] uppercase tracking-wider text-muted font-medium">Status</th>
@@ -154,7 +168,7 @@ function AdminUsers() {
             </thead>
             <tbody>
               {demoUsers.map(user => (
-                <tr key={user.id} className="border-b last:border-b-0 border-base-theme">
+                <tr key={user.id} className={`border-b last:border-b-0 ${isDark ? 'border-white/5' : 'border-black/5'}`}>
                   <td className="px-6 py-4">
                     <p className="text-[13px] text-primary">{user.name}</p>
                     <p className="text-[11px] text-muted">{user.email}</p>
@@ -180,7 +194,7 @@ function AdminUsers() {
   );
 }
 
-function AdminAlgorithms() {
+function AdminAlgorithms({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-8">
       <div>
@@ -190,7 +204,7 @@ function AdminAlgorithms() {
 
       <div className="space-y-px">
         {algorithms.map(algo => (
-          <div key={algo.id} className="p-6 border border-base-theme bg-base-theme">
+          <div key={algo.id} className={`p-6 border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-light text-primary mb-1">{algo.name}</h3>
@@ -214,7 +228,7 @@ function AdminAlgorithms() {
   );
 }
 
-function AdminSignals() {
+function AdminSignals({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -229,7 +243,7 @@ function AdminSignals() {
 
       <div className="space-y-px">
         {signals.map(sig => (
-          <div key={sig.id} className="p-6 border border-base-theme bg-base-theme">
+          <div key={sig.id} className={`p-6 border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <span className={`text-[11px] uppercase tracking-wider px-2 py-1 rounded-full border ${sig.direction === 'LONG' ? 'border-profit/30 text-profit' : 'border-loss/30 text-loss'}`}>
@@ -255,7 +269,7 @@ function AdminSignals() {
   );
 }
 
-function AdminSubscriptions() {
+function AdminSubscriptions({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-12">
       <div>
@@ -263,13 +277,13 @@ function AdminSubscriptions() {
         <h2 className="display-md text-4xl text-primary">Payments</h2>
       </div>
 
-      <div className="grid grid-cols-3 gap-px bg-base-theme">
+      <div className="grid grid-cols-3 gap-px bg-white/5">
         {[
           { label: 'MRR', value: '$48,290' },
           { label: 'Active Subs', value: '342' },
           { label: 'Churn Rate', value: '3.2%' },
         ].map((s, i) => (
-          <div key={i} className="p-6 bg-base-theme">
+          <div key={i} className={`p-6 ${isDark ? 'bg-base' : 'bg-light-base'}`}>
             <p className="text-[11px] uppercase tracking-wider text-muted mb-2">{s.label}</p>
             <p className="metric text-3xl text-primary">{s.value}</p>
           </div>
@@ -279,7 +293,7 @@ function AdminSubscriptions() {
   );
 }
 
-function AdminBots() {
+function AdminBots({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-8">
       <div>
@@ -289,7 +303,7 @@ function AdminBots() {
 
       <div className="space-y-px">
         {bots.map(bot => (
-          <div key={bot.id} className="p-6 border border-base-theme bg-base-theme">
+          <div key={bot.id} className={`p-6 border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-light text-primary mb-1">
@@ -315,7 +329,7 @@ function AdminBots() {
   );
 }
 
-function AdminSystem() {
+function AdminSystem({ isDark }: { isDark: boolean }) {
   return (
     <div className="space-y-12">
       <div>
@@ -323,7 +337,7 @@ function AdminSystem() {
         <h2 className="display-md text-4xl text-primary">System</h2>
       </div>
 
-      <div className="p-8 border border-base-theme bg-base-theme">
+      <div className={`p-8 border ${isDark ? 'border-white/5 bg-base' : 'border-black/5 bg-light-base'}`}>
         <h3 className="text-lg font-light text-primary mb-6">Services</h3>
         <div className="space-y-4">
           {[

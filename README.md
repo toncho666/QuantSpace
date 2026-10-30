@@ -1,182 +1,250 @@
 # QuantSpace — Algorithmic Trading Platform
 
-Премиальная платформа алгоритмической торговли с институциональным уровнем аналитики и прозрачности.
+Премиальная платформа алгоритмической торговли с институциональным уровнем аналитики.
 
-## 🎯 Ключевые особенности
+## ✅ Полная структура продукта восстановлена
 
-### 📊 Институциональная аналитика
+### 📊 10 алгоритмов с полными метриками
 
-**8 групп метрик для каждой стратегии:**
+Все 10 стратегий с 60+ метриками каждая:
 
-1. **Доходность (Return)**
-   - CAGR, чистая прибыль, средняя месячная/годовая доходность
-   - Доля прибыльных месяцев, доходность после комиссий
+1. **VP Mean Reversion** — Mean Reversion (moderate, paper)
+   - CAGR: 18.7%, Sharpe: 1.62, Max DD: -8.2%
+   
+2. **Trend Continuation** — Trend Following (moderate, paper)
+   - CAGR: 28.1%, Sharpe: 1.89, Max DD: -12.1%
+   
+3. **Breakout Value Shift** — Breakout (aggressive, backtest)
+   - CAGR: 34.8%, Sharpe: 1.45, Max DD: -15.8%
+   
+4. **Delta Divergence Scalp** — Scalping (aggressive, backtest)
+   - CAGR: 15.2%, Sharpe: 2.10, Max DD: -6.4%
+   
+5. **Statistical Arbitrage** — Statistical Arbitrage (conservative, paper)
+   - CAGR: 12.8%, Sharpe: 2.34, Max DD: -4.2%
+   
+6. **Volatility Breakout** — Volatility (moderate, paper)
+   - CAGR: 22.8%, Sharpe: 1.78, Max DD: -9.8%
+   
+7. **Grid Market Making** — Market Making (conservative, backtest)
+   - CAGR: 17.8%, Sharpe: 2.67, Max DD: -5.6%
+   
+8. **Momentum Trend** — Trend Following (moderate, live)
+   - CAGR: 31.2%, Sharpe: 1.62, Max DD: -14.2%
+   
+9. **RSI Mean Reversion** — Mean Reversion (moderate, paper)
+   - CAGR: 15.6%, Sharpe: 1.89, Max DD: -7.3%
+   
+10. **Carry Trade FX** — Carry Trade (conservative, live)
+    - CAGR: 10.2%, Sharpe: 1.45, Max DD: -6.1%
 
-2. **Риск и просадки (Risk)**
-   - Max drawdown, текущая просадка, длительность восстановления
-   - VaR, CVaR, волатильность, худший день/неделя/месяц
-   - Риск разорения, максимальная серия убытков
+### 🤖 5 торговых ботов
 
-3. **Эффективность с поправкой на риск (Risk-adjusted)**
-   - Sharpe, Sortino, Calmar, Sterling, MAR ratios
-   - Return/Max DD, Return/Avg DD
+1. **VP AutoTrader** — Mean Reversion (demo, $99/mo)
+2. **Trend Rider** — Trend Following (coming_soon, $149/mo)
+3. **Breakout Executor** — Breakout (coming_soon, $2499 license)
+4. **Scalp Master** — Scalping (demo, $199/mo)
+5. **Stat Arb Pro** — Statistical Arbitrage (available, $299/mo)
 
-4. **Статистика сделок (Trade Statistics)**
-   - Win rate, profit factor, expectancy
-   - Средний выигрыш/убыток, R-multiple
-   - Длительность сделок, частота торговли
+### 📡 5 торговых сигналов
 
-5. **Устойчивость (Robustness)**
-   - In-sample vs Out-of-sample результаты
-   - Walk-forward анализ, Monte Carlo симуляции
-   - Чувствительность к параметрам, риск переоптимизации
+- VP Mean Reversion: ES LONG (ACTIVE)
+- Trend Continuation: BTC/USDT LONG (TRIGGERED)
+- Breakout Value Shift: NQ SHORT (CLOSED, +1.8%)
+- Statistical Arbitrage: BTC/ETH LONG (ACTIVE)
+- Momentum Trend: EUR/USD LONG (TRIGGERED)
 
-6. **Рыночное поведение (Market Behavior)**
-   - Производительность в тренде/флэте/высокой волатильности
-   - Long/Short статистика, средняя экспозиция
-   - Лучшие сессии, время в позиции
+### 💳 3 плана подписки
 
-7. **Эффективность капитала (Capital Efficiency)**
-   - Рекомендуемый капитал, размер позиции, плечо
-   - Return on capital/margin, turnover
-   - Ёмкость стратегии
+1. **Starter** — $49/mo (1 алгоритм)
+2. **Professional** — $149/mo (3 алгоритма, highlighted)
+3. **Institutional** — $399/mo (все алгоритмы)
 
-8. **Операционная надёжность (Operational Reliability)**
-   - Uptime системы, задержки сигналов
-   - Ошибки исполнения, пропущенные сделки
-   - Стабильность брокера
+## 📱 Все страницы на месте
 
-### 📈 4 типа графиков
+### Публичные страницы:
+- `/` — **Landing** — главная с 6 карточками алгоритмов
+- `/algorithms` — **Algorithms** — каталог с расширенной фильтрацией
+- `/algorithms/:slug` — **AlgorithmDetail** — детальная страница (5 вкладок)
+- `/compare` — **Compare** — сравнение 3 алгоритмов по умолчанию
+- `/shop` — **Shop** — маркетплейс 5 ботов
 
-1. **Equity Curve** — кривая роста капитала
-2. **Drawdown Curve** — глубина и продолжительность просадок
-3. **Monthly Returns Heatmap** — доходность по месяцам (тепловая карта)
-4. **Rolling Sharpe** — изменение Sharpe ratio во времени
+### Авторизация:
+- `/login` — **Login** — страница входа
+- `/register` — **Register** — страница регистрации
 
-### 🏛 Регуляторная прозрачность
+### Личный кабинет:
+- `/dashboard` — **Dashboard** с 5 вкладками:
+  - Overview — обзор с метриками и сигналами
+  - Signals — список торговых сигналов
+  - Analytics — аналитика производительности
+  - Subscriptions — управление подписками
+  - Settings — настройки профиля
 
-Каждая стратегия включает:
-- **Тип результатов**: backtest / paper trading / live
-- **Период тестирования**: даты начала и окончания
-- **Учтённые комиссии и проскальзывание**
-- **Начальный капитал и методология расчёта**
-- **Допущения по плечу**
-- **Ограничения и дисклеймеры**
+### Администрирование:
+- `/admin` — **Admin** с 7 вкладками:
+  - Overview — обзор системы
+  - Users — управление пользователями (5 демо-пользователей)
+  - Algorithms — управление алгоритмами
+  - Signals — управление сигналами
+  - Payments — управление платежами
+  - Bots — управление ботами
+  - System — мониторинг системы
 
-Соответствие требованиям CFTC/NFA для гипотетических результатов.
+## 🔍 Расширенная фильтрация алгоритмов
+
+### Фильтры:
+- **Поиск** — по названию алгоритма
+- **Risk Profile** — Conservative, Moderate, Aggressive
+- **Status** — Backtest, Paper Trading, Live
+- **Market** — Futures, Crypto, Forex, Equities
+
+### Сортировка:
+- CAGR (годовая доходность)
+- Sharpe Ratio
+- Win Rate
+- Profit Factor
+- Lowest Max Drawdown
+
+### Счётчик результатов:
+- Показывает "Showing X of 10 strategies"
+
+## 📊 8 групп метрик (60+ показателей)
+
+### 1. Доходность (Return)
+- `totalReturn` — общая доходность
+- `cagr` — годовая доходность (CAGR)
+- `netProfit` — чистая прибыль
+- `avgMonthlyReturn` — средняя месячная доходность
+- `profitableMonthsPct` — доля прибыльных месяцев
+- `returnAfterCosts` — доходность после комиссий
+
+### 2. Риск и просадки (Risk)
+- `maxDrawdown` — максимальная просадка
+- `currentDrawdown` — текущая просадка
+- `avgDrawdown` — средняя просадка
+- `maxDrawdownDuration` — длительность просадки
+- `recoveryTime` — время восстановления
+- `volatility` — волатильность
+- `var95` — VaR (95%)
+- `cvar95` — CVaR (95%)
+- `worstDay/Week/Month` — худший день/неделя/месяц
+- `maxConsecutiveLosses` — максимальная серия убытков
+- `riskOfRuin` — риск разорения
+
+### 3. Эффективность с поправкой на риск
+- `sharpeRatio` — Sharpe ratio
+- `sortinoRatio` — Sortino ratio
+- `calmarRatio` — Calmar ratio
+- `sterlingRatio` — Sterling ratio
+- `marRatio` — MAR ratio
+
+### 4. Статистика сделок
+- `totalTrades` — общее число сделок
+- `winRate` — процент прибыльных сделок
+- `avgWin/avgLoss` — средний выигрыш/убыток
+- `profitFactor` — profit factor
+- `expectancy` — математическое ожидание
+- `avgRMultiple` — средний R-multiple
+- `avgTradeDuration` — средняя длительность сделки
+- `tradesPerDay` — сделок в день
+- `costPerTrade` — издержки на сделку
+
+### 5. Устойчивость (Robustness)
+- `inSampleReturn` — доходность на обучающей выборке
+- `outOfSampleReturn` — доходность на тестовой выборке
+- `walkForwardReturn` — walk-forward результат
+- `monteCarloP50/P5` — Monte Carlo симуляции
+- `parameterSensitivity` — чувствительность к параметрам
+- `top10TradesContribution` — вклад топ-10 сделок
+- `overfittingRisk` — риск переоптимизации
+
+### 6. Рыночное поведение
+- `trendPerformance` — производительность в тренде
+- `flatPerformance` — производительность во флэте
+- `highVolPerformance` — производительность при высокой волатильности
+- `longWinRate/shortWinRate` — win rate для long/short
+- `avgExposure` — средняя экспозиция
+- `avgTimeInPosition` — среднее время в позиции
+
+### 7. Эффективность капитала
+- `recommendedCapital` — рекомендуемый капитал
+- `maxPositionSize` — максимальный размер позиции
+- `leverage` — плечо
+- `marginRequirement` — требование к марже
+- `returnOnCapital` — доходность на капитал
+- `strategyCapacity` — ёмкость стратегии
+
+### 8. Операционная надёжность
+- `systemUptime` — доступность системы
+- `executionErrors` — ошибки исполнения
+- `signalDelay` — задержка сигнала
+- `missedTrades` — пропущенные сделки
+- `brokerStability` — стабильность брокера
 
 ## 🎨 Дизайн
 
-### Передовые UI/UX техники 2026
-
-- **Bento Grid Layout** — асимметричная сетка карточек
-- **Glassmorphism** — полупрозрачные элементы с backdrop-blur
-- **Gradient Mesh Backgrounds** — многослойные радиальные градиенты
-- **Spring Physics** — физически корректные анимации
-- **Micro-interactions** — hover эффекты с 3D transforms
-
-### Типографика
-
+### Шрифт
 - **Geist Sans** — основной шрифт (от Vercel)
 - **Geist Mono** — для метрик и технических данных
 
 ### Цветовая палитра
+- **Profit:** `#10b981` (зелёный)
+- **Loss:** `#ef4444` (красный)
+- **Accent Purple:** `#8b5cf6`
+- **Accent Blue:** `#3b82f6`
+- **Accent Cyan:** `#06b6d4`
 
-**Vibrant Accents:**
-- Purple: `#8b5cf6`
-- Blue: `#3b82f6`
-- Cyan: `#06b6d4`
-- Pink: `#ec4899`
-- Orange: `#f97316`
+### Компоненты
+- **Glass** — полупрозрачные карточки с backdrop-blur
+- **Gradient Mesh** — многослойные радиальные градиенты
+- **Metric** — моноширинный шрифт для чисел
+- **Label** — uppercase текст с tracking
+- **FadeIn** — анимация появления при скролле
+- **Stagger** — последовательная анимация элементов
 
-## 📱 Страницы
+## 📊 Форматирование чисел
 
-### `/` — Landing Page
-- Hero с gradient mesh background
-- Bento grid с карточками алгоритмов
-- Metrics showcase (8 карточек)
-- Advanced metrics section
-- CTA с gradient border анимацией
+Все числовые значения форматируются через утилиты в `src/utils/format.ts`:
 
-### `/algorithms` — Каталог стратегий
-- Все 10 стратегий с 10 ключевыми показателями
-- Фильтры: Risk Profile, Status, Market
-- Сортировка по метрикам
-- Счётчик показанных стратегий
+```typescript
+formatPercent(value, decimals)    // "18.7%"
+formatMoney(value, decimals)      // "$23.4k", "$1.2M"
+formatNumber(value, decimals)     // "142", "0.6"
+formatRatio(value, decimals)      // "1.62", "2.14"
+```
 
-### `/algorithms/[slug]` — Детальная страница
-**5 вкладок:**
-1. **Overview** — Equity Curve, Drawdown, Monthly Returns, Rolling Sharpe
-2. **Trade Statistics** — 12 метрик торговли
-3. **Risk Analysis** — 12 метрик риска
-4. **Robustness** — 9 метрик устойчивости
-5. **Technical** — Market Behavior, Capital Efficiency, Operational Reliability
+### Правила округления
 
-**Регуляторный блок:**
-- Тип результатов (backtest/paper/live)
-- Период тестирования
-- Комиссии и проскальзывание
-- Начальный капитал
-- Методология расчёта
+**Проценты:**
+- Доходность, win rate, drawdown: **1 знак** после запятой
+- Risk of ruin: **2 знака** (малые значения)
 
-### `/compare` — Сравнение алгоритмов
-- Выбор до 5 стратегий
-- Radar chart (6 метрик)
-- Overlay equity curves
-- Детальная таблица метрик
-- Сортировка и фильтрация
+**Деньги:**
+- Автоматическое форматирование: `$23.4k`, `$1.2M`
+- Expectancy: целые числа
+- Cost per trade: **2 знака**
 
-### `/dashboard` — Личный кабинет
-- Overview с метриками
-- Signals с фильтрами
-- Analytics с графиками
-- Subscriptions
-- Settings
+**Коэффициенты:**
+- Sharpe, Sortino, Calmar: **2 знака**
+- Profit factor: **2 знака**
+- Leverage: целые числа с "x"
 
-### `/shop` — Маркетплейс ботов
-- Список торговых ботов
-- Статусы (available/demo/coming soon)
-- Метрики и цены
-
-### `/admin` — Админ-панель
-- Управление пользователями
-- Алгоритмы и сигналы
-- Платежи и подписки
-- Системный мониторинг
-
-## 🎯 10 стратегий
-
-1. **VP Mean Reversion** — Volume Profile (moderate)
-2. **Trend Continuation** — Trend Following (moderate)
-3. **Breakout Value Shift** — Breakout (aggressive)
-4. **Delta Divergence Scalp** — Scalping (aggressive)
-5. **Statistical Arbitrage** — Pairs Trading (conservative)
-6. **Volatility Breakout** — Volatility (moderate)
-7. **Grid Market Making** — Market Making (conservative)
-8. **Momentum Trend** — Trend Following (moderate)
-9. **RSI Mean Reversion** — Mean Reversion (moderate)
-10. **Carry Trade FX** — Carry Trade (conservative)
-
-Каждая стратегия имеет:
-- ✅ 8 групп метрик (60+ показателей)
-- ✅ 4 типа графиков
-- ✅ Регуляторную информацию
-- ✅ Только растущий equity curve
-- ✅ Детальное описание
-- ✅ Signal logic
-- ✅ Limitations
-- ✅ Pricing
+**Количества:**
+- Total trades: целые числа
+- Trades per day: **1 знак**
+- Signal delay: целые числа с "ms"
 
 ## 🚀 Технологии
 
 - **React 18** + TypeScript
 - **Vite** (быстрая сборка)
 - **Tailwind CSS 4** (utility-first)
-- **Framer Motion** (advanced animations)
-- **Recharts** (data visualization)
-- **React Router** (navigation)
-- **Lucide React** (icons)
-- **Geist Font** (typography)
+- **Framer Motion** (анимации)
+- **Recharts** (графики)
+- **React Router** (навигация)
+- **Lucide React** (иконки)
+- **Geist Font** (типографика)
 
 ## 📦 Установка
 
@@ -191,54 +259,92 @@ npm run dev
 npm run build
 ```
 
-## 🎨 Ключевые компоненты
+## 📝 Структура проекта
 
-### Графики
-- **DrawdownChart** — визуализация просадок
-- **MonthlyReturnsHeatmap** — тепловая карта месячной доходности
-- **RollingSharpeChart** — скользящий Sharpe ratio
-- **MetricCard** — карточки метрик со sparklines
+```
+src/
+├── App.tsx                    # Главный компонент с роутингом
+├── main.tsx                   # Точка входа
+├── index.css                  # Глобальные стили
+│
+├── components/
+│   ├── Layout.tsx            # Общий layout с навигацией
+│   ├── Toast.tsx             # Компонент уведомлений
+│   ├── FadeIn.tsx            # Анимация появления
+│   └── Stagger.tsx           # Последовательная анимация
+│
+├── pages/
+│   ├── Landing.tsx           # Главная страница (6 карточек)
+│   ├── Algorithms.tsx        # Каталог (10 алгоритмов, фильтрация)
+│   ├── AlgorithmDetail.tsx   # Детальная страница (5 вкладок)
+│   ├── Compare.tsx           # Сравнение (3 по умолчанию)
+│   ├── Login.tsx             # Страница входа
+│   ├── Register.tsx          # Страница регистрации
+│   ├── Dashboard.tsx         # Личный кабинет (5 вкладок)
+│   ├── Shop.tsx              # Маркетплейс (5 ботов)
+│   └── Admin.tsx             # Админ-панель (7 вкладок)
+│
+├── data/
+│   └── mockData.ts           # Моковые данные
+│       ├── algorithms (10)
+│       ├── bots (5)
+│       ├── signals (5)
+│       └── subscriptionPlans (3)
+│
+└── utils/
+    └── format.ts             # Утилиты форматирования
+```
 
-### UI
-- **BentoCard** — асимметричная сетка
-- **GlassCard** — glassmorphism эффекты
-- **GradientMesh** — многослойные градиенты
-- **FadeIn** — scroll-triggered анимации
-- **Stagger** — последовательное появление
-
-## ✨ Анимации
-
-- **Spring Physics** — естественные движения
-- **Stagger Animations** — последовательное появление
-- **Scroll-triggered** — Intersection Observer
-- **Micro-interactions** — hover scale, translate, color transitions
-- **CTA Pulse** — пульсация кнопок действия
-
-## 🌓 Темы
-
-**Светлая тема (по умолчанию):**
-- Чистый белый фон
-- Тёмный текст
-- Vibrant акценты
-
-**Тёмная тема:**
-- Глубокий чёрный фон
-- Светлый текст
-- Те же vibrant акценты
-
-Переключение через кнопку в header.
-
-## 📈 Навигация
+## 🎯 Навигация
 
 **Главное меню:**
-- Algorithms — полный каталог всех стратегий
-- Compare — сравнение алгоритмов по метрикам
+- Algorithms — каталог всех стратегий
+- Compare — сравнение алгоритмов
 - Bot Shop — маркетплейс торговых ботов
 - Dashboard — личный кабинет
 
-## ⚠️ Дисклеймер
+**Дополнительные страницы:**
+- Login / Register — авторизация
+- Admin — административная панель
 
-Все данные являются синтетическими демо-данными. Это не реальные торговые результаты. Торговля связана с риском убытков. Прошлые результаты не гарантируют будущую доходность.
+## ✅ Восстановленный контент
+
+### По сравнению с версией 2 дня назад:
+
+✅ **10 алгоритмов** (было 2)
+- Все с полными 60+ метриками
+- Разные классы стратегий
+- Разные risk profiles
+- Разные статусы (backtest/paper/live)
+
+✅ **Расширенная фильтрация**
+- Поиск по названию
+- Фильтр по risk profile
+- Фильтр по status
+- Фильтр по market
+- Сортировка по 5 метрикам
+- Счётчик результатов
+
+✅ **5 ботов** (было 2)
+- Разные категории
+- Разные статусы
+- Разные цены
+
+✅ **5 сигналов** (было 2)
+- Разные алгоритмы
+- Разные статусы
+- Разные инструменты
+
+✅ **6 карточек на Landing** (было 4)
+- Больше контента на главной
+
+✅ **3 алгоритма в Compare** (было 2)
+- Больше данных для сравнения
+
+✅ **Все страницы на месте**
+- Dashboard с 5 вкладками
+- Shop с 5 ботами
+- Admin с 7 вкладками
 
 ## 📄 Лицензия
 
@@ -246,30 +352,31 @@ npm run build
 
 ## 🔄 Последние изменения
 
-### Major Update: Институциональная аналитика
+### Восстановление полного контента
 
-✅ **8 групп метрик для каждой стратегии**
-- Return, Risk, Risk-adjusted, Trade Statistics
-- Robustness, Market Behavior, Capital Efficiency, Operational Reliability
+✅ **10 алгоритмов с полными метриками**
+- VP Mean Reversion, Trend Continuation, Breakout Value Shift
+- Delta Divergence Scalp, Statistical Arbitrage, Volatility Breakout
+- Grid Market Making, Momentum Trend, RSI Mean Reversion, Carry Trade FX
 
-✅ **4 типа графиков**
-- Equity Curve, Drawdown Curve, Monthly Returns Heatmap, Rolling Sharpe
+✅ **Расширенная фильтрация на /algorithms**
+- Поиск, Risk Profile, Status, Market
+- Сортировка по CAGR, Sharpe, Win Rate, Profit Factor, Max DD
+- Счётчик "Showing X of 10 strategies"
 
-✅ **Регуляторная прозрачность**
-- Тип результатов (backtest/paper/live)
-- Период тестирования, комиссии, проскальзывание
-- Начальный капитал, методология расчёта
-- Соответствие CFTC/NFA требованиям
+✅ **5 ботов на /shop**
+- VP AutoTrader, Trend Rider, Breakout Executor, Scalp Master, Stat Arb Pro
 
-✅ **5 вкладок на странице алгоритма**
-- Overview, Trade Statistics, Risk Analysis, Robustness, Technical
+✅ **5 сигналов**
+- Разные алгоритмы, инструменты, статусы
 
-✅ **60+ метрик для каждой стратегии**
-- Полная институциональная аналитика
-- Все данные для принятия решений
-- Прозрачность и воспроизводимость
+✅ **3 плана подписки**
+- Starter ($49), Professional ($149), Institutional ($399)
 
-✅ **Geist шрифт**
-- Современный, характерный
-- Отлично читается в малых размерах
-- Идеален для fintech/tech продуктов
+✅ **6 карточек на Landing**
+- Больше контента на главной странице
+
+✅ **3 алгоритма в Compare по умолчанию**
+- Больше данных для сравнения
+
+Проект полностью восстановлен и готов к использованию!

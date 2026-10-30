@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useTheme } from '../App';
+import { BarChart3 } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '../components/Toast';
 
 export function Register() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirm: '', agree: false });
   const { showToast } = useToast();
 
@@ -25,9 +29,9 @@ export function Register() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-12">
-          <p className="text-[15px] font-medium tracking-tight mb-4 text-primary">
-            Quant<span className="text-accent">Space</span>
-          </p>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <BarChart3 className="w-8 h-8 text-accent-purple" />
+          </div>
           <h1 className="display-md text-4xl text-primary mb-3">Create account</h1>
           <p className="text-[14px] font-light text-secondary">
             Start exploring systematic strategies
